@@ -47,7 +47,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">Image</label>
-                                    <img class="img-responsive pad" style="max-width: 300px;" src="<?= base_url() ?>upload/img/<?= $detail->row()->image ?>" alt="Photo">
+                                    <img class="img-responsive pad" style="max-width: 300px;" src="<?= base_url() ?>upload/img/<?= $detail->row()->image ?>" alt="Photo" data-toggle="modal" data-target="#imageIssue">
                                 </div>
                             </div>
                         </div>

@@ -75,3 +75,5 @@ $route['issue/loadcomment'] = 'pic/loadComment';
 //IssueRequest
 $route['issuerequest/issuein'] = 'pic/loadIssueRequest';
 $route['issuerequest/detailissue'] = 'pic/detailIssueRequest';
+$route['issuerequest/loadmodalcommentimage'] = 'pic/loadModalCommentImage';
+$route['issuerequest/createcommentimage'] = 'pic/createCommentImage';

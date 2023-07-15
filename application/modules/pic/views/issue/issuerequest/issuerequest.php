@@ -17,9 +17,6 @@
                 <?php $this->load->view('alert') ?>
                 <div class="box">
                     <div class="box-header">
-                        <button onclick="showModalCreateIssue()" class="btn btn-primary btn-sm pull-right">
-                            Create new issue
-                        </button>
                     </div>
                     <div class="box-body table-responsive">
                         <table class="table table-bordered table-striped" id="table1">
@@ -140,7 +137,20 @@
 </div>
 
 <div id="modalDetail"></div>
+<div id="modalImageIssue">
+    <div class="modal fade" id="imageIssue" tabindex="-1" role="dialog" aria-labelledby="gambarModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 90%; margin: 30px auto;">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="" class="img-fluid" style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="modalTracking"></div>
+<div id="modalCommentImage"></div>
+
 
 <div class="modal fade" id="modal-pilih-dept">
     <div class="modal-dialog" style="max-width: 500px;">
@@ -180,6 +190,17 @@
 </div>
 <?php $this->load->view('footer') ?>
 <div id="div-modal-pic"></div>
+
+<script>
+    $('#imageIssue').on('show.bs.modal', function(event) {
+        var gambar = $(event.relatedTarget); // Tombol yang memicu modal
+        var src = gambar.attr('src'); // Mendapatkan sumber gambar
+
+        var modal = $(this);
+        modal.find('.modal-body img').attr('src', src); // Mengatur sumber gambar pada modal
+    });
+</script>
+
 <script>
     $(document).ready(function() {
         $('#tableDept').DataTable({

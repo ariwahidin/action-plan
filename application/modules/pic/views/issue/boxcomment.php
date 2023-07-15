@@ -6,7 +6,20 @@
                     <?= ucwords(strtolower($data->fullname)) ?>
                     <span class="text-muted pull-right"><?= date('d/m/Y H:i', strtotime($data->created_at)) ?></span>
                 </span>
-                <?= ucfirst($data->desc) ?>
+
+                <?php if (!is_null($data->image)) { ?>
+                    <!-- <div class="attachment-block clearfix"> -->
+                    <img class="attachment-img" style="min-width: 100px; min-height: 60px; margin-right: 5px;" src="<?= base_url() ?>upload/commentimg/<?= $data->image ?>" alt="Attachment Image" data-toggle="modal" data-target="#commentGambar">
+                    <div class="attachment-pushed">
+                        <div class="attachment-text">
+                            <?= ucfirst($data->desc) ?>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                <?php } else { ?>
+                    <?= ucfirst($data->desc) ?>
+                <?php } ?>
+
             </div>
         </div>
     <?php } ?>

@@ -141,4 +141,45 @@ class Pic extends CI_Controller
         );
         $this->load->view('issue/issuerequest/modalissuedetail', $data);
     }
+
+    public function loadModalCommentImage()
+    {
+        $post = $this->input->post();
+        $data = array(
+            'issue_id' => $post['issue_id']
+        );
+        $this->load->view('issue/issuerequest/modalcommentimage', $data);
+    }
+
+    public function createCommentImage()
+    {
+        $post = $this->input->post();
+        $fileName = "COMIMG" . $this->session->userdata('sd_username') . date('YmdHis') . ".jpg";
+        // var_dump($post);
+        if (!empty($post['gambar_kompres']) && $post['gambar_kompres'] != "") {
+            $gambarKompres = $post['gambar_kompres'];
+            $gambarKompres = str_replace('data:image/jpeg;base64,', '', $gambarKompres);
+            $gambarKompres = str_replace(' ', '+', $gambarKompres);
+            $decodedData = base64_decode($gambarKompres);
+            $fileDestination = 'upload/commentimg/' . $fileName;
+            file_put_contents($fileDestination, $decodedData);
+        }
+
+        $params = array(
+            'issue_id' => $post['issue_id'],
+            'desc' => $post['gambar_desc'],
+            'image' => $fileName,
+            'created_by' => $this->session->userdata('sd_user_id')
+        );
+
+        $create = $this->pic_model->createComment($params);
+
+        if ($this->db->affected_rows() > 0) {
+            $response = array('success' => true);
+        } else {
+            $response = array('success' => false);
+        }
+
+        echo json_encode($response);
+    }
 }

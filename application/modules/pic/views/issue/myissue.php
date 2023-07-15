@@ -141,6 +141,8 @@
 
 <div id="modalDetail"></div>
 <div id="modalTracking"></div>
+<div id="modalCommentImage"></div>
+
 
 <div class="modal fade" id="modal-pilih-dept">
     <div class="modal-dialog" style="max-width: 500px;">
