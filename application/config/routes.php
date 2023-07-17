@@ -71,9 +71,17 @@ $route['issue/detailissue'] = 'pic/detailIssue';
 $route['issue/trackingissue'] = 'pic/trackingIssue';
 $route['issue/sendcomment'] = 'pic/createComment';
 $route['issue/loadcomment'] = 'pic/loadComment';
+$route['issue/closeissue'] = 'pic/closeIssue';
 
 //IssueRequest
 $route['issuerequest/issuein'] = 'pic/loadIssueRequest';
 $route['issuerequest/detailissue'] = 'pic/detailIssueRequest';
+$route['issuerequest/detailclosedissue'] = 'pic/detailCloseIssue';
 $route['issuerequest/loadmodalcommentimage'] = 'pic/loadModalCommentImage';
 $route['issuerequest/createcommentimage'] = 'pic/createCommentImage';
+$route['issuerequest/closedissue'] = 'pic/loadCloseIssue';
+
+//Settings
+$route['settings/profile'] = 'pic/loadProfile';
+$route['settings/profile/gantifoto'] = 'pic/gantiFotoProfile';
+$route['settings/profile/gantipassword'] = 'pic/gantiPassword';

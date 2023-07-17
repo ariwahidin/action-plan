@@ -2,13 +2,13 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            MyIssue
-            <small>Data issue milik user <?= $this->session->userdata('sd_fullname') ?></small>
+            Issue Request
+            <small>Data issue request</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="">Issue</li>
-            <li class="active">MyIssue</li>
+            <li class="active">Issue Request</li>
         </ol>
     </section>
     <section class="content">
@@ -17,9 +17,6 @@
                 <?php $this->load->view('alert') ?>
                 <div class="box">
                     <div class="box-header">
-                        <button onclick="showModalCreateIssue()" class="btn btn-primary btn-sm pull-right">
-                            Create new issue
-                        </button>
                     </div>
                     <div class="box-body table-responsive">
                         <table class="table table-bordered table-striped" id="table1">
@@ -31,7 +28,6 @@
                                     <th>Assign to Pic</th>
                                     <th>Subject</th>
                                     <th>Status</th>
-                                    <th>Last Read</th>
                                     <th>Request Date</th>
                                     <th>Request By</th>
                                     <th>Action</th>
@@ -39,7 +35,7 @@
                             </thead>
                             <tbody>
                                 <?php $no = 1;
-                                foreach ($myissue->result() as $data) { ?>
+                                foreach ($issuerequest->result() as $data) { ?>
                                     <tr>
                                         <td><?= $no++ ?></td>
                                         <td><?= $data->code_issue ?></td>
@@ -47,10 +43,7 @@
                                         <td><?= ucwords(strtolower($data->assign_to_pic_name)) ?></td>
                                         <td><?= $data->subject ?></td>
                                         <td><?= $data->status_name ?></td>
-                                        <td><?php if (!is_null($data->last_read)) {
-                                                echo date('d/m/Y H:i', strtotime($data->last_read));
-                                            } ?></td>
-                                        <td><?= date('d/m/Y', strtotime($data->created_at)) ?></td>
+                                        <td><?= date('d/m/Y H:i', strtotime($data->created_at)) ?></td>
                                         <td><?= $data->created_by_name ?></td>
                                         <td>
                                             <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail</button>
@@ -144,12 +137,19 @@
 </div>
 
 <div id="modalDetail"></div>
+<div id="modalImageIssue">
+    <div class="modal fade" id="imageIssue" tabindex="-1" role="dialog" aria-labelledby="gambarModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 90%; margin: 30px auto;">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="" class="img-fluid" style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="modalTracking"></div>
 <div id="modalCommentImage"></div>
-
-<div>
-    <?php $this->load->view('issue/modal-close-issue') ?>
-</div>
 
 
 <div class="modal fade" id="modal-pilih-dept">
@@ -190,6 +190,17 @@
 </div>
 <?php $this->load->view('footer') ?>
 <div id="div-modal-pic"></div>
+
+<script>
+    $('#imageIssue').on('show.bs.modal', function(event) {
+        var gambar = $(event.relatedTarget); // Tombol yang memicu modal
+        var src = gambar.attr('src'); // Mendapatkan sumber gambar
+
+        var modal = $(this);
+        modal.find('.modal-body img').attr('src', src); // Mengatur sumber gambar pada modal
+    });
+</script>
+
 <script>
     $(document).ready(function() {
         $('#tableDept').DataTable({
@@ -353,7 +364,7 @@
 
     function showIssueDetail(button) {
         let issue_id = $(button).data('issue-id')
-        $('#modalDetail').load("<?= base_url('issue/detailissue') ?>", {
+        $('#modalDetail').load("<?= base_url('issuerequest/detailclosedissue') ?>", {
             issue_id
         }, function() {
             $('#modal-issue-detail').modal('show')
@@ -391,17 +402,5 @@
                 }
             })
         }
-    }
-</script>
-<script>
-    function showModalCloseIssue(button) {
-        let issue_id = $(button).data('issue-id')
-        $('#close-issue-id').val(issue_id)
-        $('#modal-close-issue').modal('show')
-    }
-
-    function closeIssue(button){
-        let formCloseIssue = $('#formCloseIssue')
-        formCloseIssue.submit()
     }
 </script>

@@ -236,12 +236,12 @@
                     <ul class="nav navbar-nav">
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="<?= base_url() ?>assets/dist/img/user123.png" class="user-image" alt="User Image">
-                                <span class="hidden-xs"><?= $_SESSION['sd_username'] ?></span>
+                                <img src="<?= base_url() ?><?php if(!is_null($_SESSION['sd_image'])){echo "upload/fotoprofil/".$_SESSION['sd_image'];}else{ echo "assets/dist/img/red-user.png";}?>" class="user-image" alt="User Image">
+                                <span class="hidden-xs"><?= ucwords(strtolower($_SESSION['sd_fullname'])) ?></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="user-header">
-                                    <img src="<?= base_url() ?>assets/dist/img/user123.png" class="img-circle" alt="User Image">
+                                    <img src="<?= base_url() ?><?php if(!is_null($_SESSION['sd_image'])){echo "upload/fotoprofil/".$_SESSION['sd_image'];}else{ echo "assets/dist/img/red-user.png";}?>" class="img-circle" alt="User Image">
                                     <p>
                                         <?= $this->session->userdata('sd_fullname') ?>
                                     </p>
@@ -276,7 +276,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="treeview">
+                    <li class="treeview <?= $this->uri->segment(1) == 'issuerequest' || $this->uri->segment(1) == 'issue' ? 'active' : '' ?>">
                         <a href="#">
                             <i class="fa fa-archive"></i>
                             <span>Issue</span>
@@ -284,11 +284,29 @@
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
-                        <ul class="treeview-menu ">
-                            <li>
-                                <a href="<?= base_url('issuerequest/issuein') ?>"><i class="fa fa-tag"></i><span>Issue Request</span></a>
-                                <a href=""><i class="fa fa-tag"></i><span>Closed Issue</span></a>
-                                <a href="<?= base_url('issue/myissue') ?>" class="<?= $this->uri->segment(2) == 'myissue' ? 'active' : '' ?>"><i class="fa fa-tag"></i><span>My Issue</span></a>
+                        <ul class="treeview-menu">
+                            <li class="<?= $this->uri->segment(2) == 'issuein' ? 'active' : '' ?>">
+                                <a href="<?= base_url('issuerequest/issuein') ?>" class=""><i class="fa fa-tag"></i><span>Issue Request</span></a>
+                            </li>
+                            <li class="<?= $this->uri->segment(2) == 'closedissue' ? 'active' : '' ?>">
+                                <a href="<?= base_url('issuerequest/closedissue') ?>"><i class="fa fa-tag"></i><span>Closed Issue</span></a>
+                            </li>
+                            <li class="<?= $this->uri->segment(2) == 'myissue' ? 'active' : '' ?>">
+                                <a href="<?= base_url('issue/myissue') ?>"><i class="fa fa-tag"></i><span>My Issue</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="treeview <?= $this->uri->segment(1) == 'settings'  ? 'active' : '' ?>">
+                        <a href="#">
+                            <i class="fa fa-archive"></i>
+                            <span>Settings</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li class="<?= $this->uri->segment(2) == 'profile' ? 'active' : '' ?>">
+                                <a href="<?= base_url('settings/profile') ?>" class=""><i class="fa fa-tag"></i><span>User Profile</span></a>
                             </li>
                         </ul>
                     </li>

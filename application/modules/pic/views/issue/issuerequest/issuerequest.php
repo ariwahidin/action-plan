@@ -28,8 +28,8 @@
                                     <th>Assign to Pic</th>
                                     <th>Subject</th>
                                     <th>Status</th>
-                                    <th>Created</th>
-                                    <th>Created By</th>
+                                    <th>Request Date</th>
+                                    <th>Request By</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

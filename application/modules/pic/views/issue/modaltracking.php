@@ -19,16 +19,18 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <div class="box-footer">
-                    <div class="input-group input-group-sm">
-                        <input type="text" id="input-issue-comment" class="form-control">
-                        <input type="hidden" id="comment_issue_id" value="<?= $issue_id ?>" class="form-control">
-                        <span class="input-group-btn">
-                            <button onclick="sendComment(this)" data-tracking-issue-id="<?= $issue_id ?>" type="button" class="btn btn-info btn-flat">Send</button>
-                            <button onclick="getImage(this)" data-tracking-issue-id="<?= $issue_id ?>" type="button" class="btn btn-default btn-flat">Img</button>
-                        </span>
+                <?php if ($issue->row()->status_name != 'close') { ?>
+                    <div class="box-footer">
+                        <div class="input-group input-group-sm">
+                            <input type="text" id="input-issue-comment" class="form-control">
+                            <input type="hidden" id="comment_issue_id" value="<?= $issue_id ?>" class="form-control">
+                            <span class="input-group-btn">
+                                <button onclick="sendComment(this)" data-tracking-issue-id="<?= $issue_id ?>" type="button" class="btn btn-info btn-flat">Send</button>
+                                <button onclick="getImage(this)" data-tracking-issue-id="<?= $issue_id ?>" type="button" class="btn btn-default btn-flat">Img</button>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
                 <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> -->
                 <!-- <button onclick="" type="button" class="btn btn-primary">Close Issue</button> -->
             </div>
@@ -60,7 +62,6 @@
         clearInterval(ajaxInterval);
     });
 </script>
-
 <script>
     function getImage(button) {
         let issue_id = $(button).data('tracking-issue-id')

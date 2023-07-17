@@ -76,6 +76,7 @@ class Pic extends CI_Controller
 
     public function detailIssue()
     {
+        // die;
         $issue_id = $this->input->post('issue_id');
         $data = array(
             'detail' => $this->pic_model->getMyIssue($issue_id)
@@ -86,9 +87,11 @@ class Pic extends CI_Controller
     public function trackingIssue()
     {
         $issue_id = $this->input->post('issue_id');
+        $issue = $this->pic_model->getIssueView($issue_id);
         $comment = $this->pic_model->getComment($issue_id);
         $data = array(
             'issue_id' => $issue_id,
+            'issue' => $issue,
             'comment' => $comment
         );
         $this->load->view('issue/modaltracking', $data);
@@ -133,13 +136,34 @@ class Pic extends CI_Controller
         $this->load->view('issue/issuerequest/issuerequest', $data);
     }
 
+    public function loadCloseIssue()
+    {
+        $department = $this->pic_model->getDepartment();
+
+        $data = array(
+            'issuerequest' => $this->pic_model->getClosedIssue(),
+            'department' => $department
+        );
+        $this->load->view('issue/closedissue/issuerequest', $data);
+    }
+
     public function detailIssueRequest()
     {
         $issue_id = $this->input->post('issue_id');
+        $update_issue_is_read = $this->pic_model->updateIssueIsRead($issue_id);
         $data = array(
             'detail' => $this->pic_model->getIssueRequestForMe($issue_id)
         );
         $this->load->view('issue/issuerequest/modalissuedetail', $data);
+    }
+
+    public function detailCloseIssue()
+    {
+        $issue_id = $this->input->post('issue_id');
+        $data = array(
+            'detail' => $this->pic_model->getDetailClosedIssue($issue_id)
+        );
+        $this->load->view('issue/closedissue/modalissuedetail', $data);
     }
 
     public function loadModalCommentImage()
@@ -180,6 +204,70 @@ class Pic extends CI_Controller
             $response = array('success' => false);
         }
 
+        echo json_encode($response);
+    }
+
+    public function closeIssue()
+    {
+        $post = $this->input->post();
+        $this->pic_model->closeIssue($post);
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('success', 'issue has been completed');
+        } else {
+            $this->session->set_flashdata('error', 'failed');
+        }
+        redirect(base_url('issue/myissue'));
+    }
+
+    public function loadProfile()
+    {
+        $data = array(
+            'profile' => $this->pic_model->getUserDeptView()
+        );
+        $this->load->view('settings/profile/profile', $data);
+    }
+
+    public function gantiFotoProfile()
+    {
+        $post = $this->input->post();
+        $fileName = "PP" . $this->session->userdata('sd_username') . date('YmdHis') . ".jpg";
+        // var_dump($post);
+        if (!empty($post['gambar_kompres']) && $post['gambar_kompres'] != "") {
+            $gambarKompres = $post['gambar_kompres'];
+            $gambarKompres = str_replace('data:image/jpeg;base64,', '', $gambarKompres);
+            $gambarKompres = str_replace(' ', '+', $gambarKompres);
+            $decodedData = base64_decode($gambarKompres);
+            $fileDestination = 'upload/fotoprofil/' . $fileName;
+            file_put_contents($fileDestination, $decodedData);
+        }
+
+        $params = array(
+            'image' => $fileName,
+            'updated_by' => $this->session->userdata('sd_user_id'),
+            'updated_at' => $this->pic_model->getDate()
+        );
+
+        $this->pic_model->gantiFotoProfile($params);
+
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_userdata('sd_image', $fileName);
+            $response = array('success' => true);
+        } else {
+            $response = array('success' => false);
+        }
+
+        echo json_encode($response);
+    }
+
+    public function gantiPassword()
+    {
+        $post = $this->input->post();
+        $this->pic_model->gantiPassword($post);
+        if ($this->db->affected_rows() > 0) {
+            $response = array('success' => true);
+        } else {
+            $response = array('success' => false);
+        }
         echo json_encode($response);
     }
 }

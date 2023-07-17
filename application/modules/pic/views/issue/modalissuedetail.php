@@ -53,9 +53,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> -->
                 <button onclick="trackingIssue(this)" data-issue-id="<?= $detail->row()->id ?>" type="button" class="btn btn-warning">Tracking</button>
-                <button onclick="" type="button" class="btn btn-primary">Close Issue</button>
+                <?php if ($detail->row()->status_name != 'close') { ?>
+                    <button onclick="showModalCloseIssue(this)" data-issue-id="<?= $detail->row()->id ?>" type="button" class="btn btn-success">Close Issue</button>
+                <?php } ?>
             </div>
         </div>
     </div>
