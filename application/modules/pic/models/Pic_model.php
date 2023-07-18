@@ -172,4 +172,27 @@ class Pic_model extends CI_Model
         $this->db->where('id', $user_id);
         $this->db->update('master_users', $data);
     }
+
+    public function getIssueRequestOurTeam()
+    {
+        $depart_id = $this->session->userdata('sd_department');
+        $sql = "select * from issueView where assign_to_depart_id = '$depart_id' and status_name != 'close'";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getClosedIssueOurTeam()
+    {
+        $depart_id = $this->session->userdata('sd_department');
+        $sql = "select * from issueView where assign_to_depart_id = '$depart_id' and status_name = 'close'";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function teamDetailIssueRequest($issue_id)
+    {
+        $sql = "select * from issueView where id = '$issue_id'";
+        $query = $this->db->query($sql);
+        return $query;
+    }
 }

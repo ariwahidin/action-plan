@@ -5,8 +5,7 @@
             User Profile
         </h1>
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li><a href="#">Settings</a></li>
+            <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
             <li class="active">User Profile</li>
         </ol>
     </section>
@@ -24,12 +23,62 @@
 
                         <h3 class="profile-username text-center"><?= ucwords(strtolower($_SESSION['sd_fullname'])) ?></h3>
 
+                        <p class="text-muted text-center">NIP : <?= $this->session->userdata('sd_username') ?></p>
                         <p class="text-muted text-center"><?= ucwords($profile->row()->department_name) ?></p>
                         <button onclick="loadModalGantiFoto(this)" class="btn btn-primary btn-block"><b>Ganti foto profile</b></button>
                         <button onclick="loadModalGantiPassword(this)" class="btn btn-primary btn-block"><b>Ganti password</b></button>
                     </div>
                 </div>
 
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-lg-4 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3><?= $issuerequest ?></h3>
+
+                                <p>Issue Request</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-arrow-down-a"></i>
+                            </div>
+                            <a href="<?= base_url('issuerequest/issuein') ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-4 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h3><?= $closedissue ?></h3>
+
+                                <p>Closed Issue</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-checkmark-circled"></i>
+                            </div>
+                            <a href="<?= base_url('issuerequest/closedissue') ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-4 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-yellow">
+                            <div class="inner">
+                                <h3><?= $myissue ?></h3>
+
+                                <p>My Issue</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-arrow-up-a"></i>
+                            </div>
+                            <a href="<?= base_url('issue/myissue') ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
             </div>
         </div>
     </section>

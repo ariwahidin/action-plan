@@ -47,6 +47,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Action Plan</title>
+    <link rel="icon" type="image/x-icon" href="<?= base_url() ?>assets/dist/img/pandurasa_kharisma_pt.png">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -236,12 +237,20 @@
                     <ul class="nav navbar-nav">
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="<?= base_url() ?><?php if(!is_null($_SESSION['sd_image'])){echo "upload/fotoprofil/".$_SESSION['sd_image'];}else{ echo "assets/dist/img/red-user.png";}?>" class="user-image" alt="User Image">
-                                <span class="hidden-xs"><?= ucwords(strtolower($_SESSION['sd_fullname'])) ?></span>
+                                <img src="<?= base_url() ?><?php if (!is_null($_SESSION['sd_image'])) {
+                                                                echo "upload/fotoprofil/" . $_SESSION['sd_image'];
+                                                            } else {
+                                                                echo "assets/dist/img/red-user.png";
+                                                            } ?>" class="user-image" alt="User Image">
+                                <span class="hidden-xs"><?= $_SESSION['sd_username'] ?></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="user-header">
-                                    <img src="<?= base_url() ?><?php if(!is_null($_SESSION['sd_image'])){echo "upload/fotoprofil/".$_SESSION['sd_image'];}else{ echo "assets/dist/img/red-user.png";}?>" class="img-circle" alt="User Image">
+                                    <img src="<?= base_url() ?><?php if (!is_null($_SESSION['sd_image'])) {
+                                                                    echo "upload/fotoprofil/" . $_SESSION['sd_image'];
+                                                                } else {
+                                                                    echo "assets/dist/img/red-user.png";
+                                                                } ?>" class="img-circle" alt="User Image">
                                     <p>
                                         <?= $this->session->userdata('sd_fullname') ?>
                                     </p>
@@ -260,9 +269,23 @@
 
         <aside class="main-sidebar">
             <section class="sidebar">
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="<?= base_url() ?><?php if (!is_null($_SESSION['sd_image'])) {
+                                                        echo "upload/fotoprofil/" . $_SESSION['sd_image'];
+                                                    } else {
+                                                        echo "assets/dist/img/red-user.png";
+                                                    } ?>" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p><?= ucwords(strtolower($_SESSION['sd_fullname'])) ?></p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li class="treeview <?= $this->uri->segment(2) == 'employee' ? 'active' : '' ?>">
+                    <li><a href="<?= base_url('settings/profile') ?>"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+                    <!-- <li class="treeview <?= $this->uri->segment(2) == 'employee' ? 'active' : '' ?>">
                         <a href="#">
                             <i class="fa fa-archive"></i>
                             <span>Data Master</span>
@@ -275,7 +298,7 @@
                                 <a href=""><i class="fa fa-tag"></i><span>Master A</span></a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
                     <li class="treeview <?= $this->uri->segment(1) == 'issuerequest' || $this->uri->segment(1) == 'issue' ? 'active' : '' ?>">
                         <a href="#">
                             <i class="fa fa-archive"></i>
@@ -296,7 +319,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="treeview <?= $this->uri->segment(1) == 'settings'  ? 'active' : '' ?>">
+                    <!-- <li class="treeview <?= $this->uri->segment(1) == 'settings'  ? 'active' : '' ?>">
                         <a href="#">
                             <i class="fa fa-archive"></i>
                             <span>Settings</span>
@@ -309,7 +332,26 @@
                                 <a href="<?= base_url('settings/profile') ?>" class=""><i class="fa fa-tag"></i><span>User Profile</span></a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
+                    <?php if ($this->session->userdata('sd_level') == 'senior manager' || $this->session->userdata('sd_level') == 'manager') { ?>
+                        <li class="treeview <?= $this->uri->segment(1) == 'team'  ? 'active' : '' ?>">
+                            <a href="#">
+                                <i class="fa fa-archive"></i>
+                                <span>Team</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="<?= $this->uri->segment(1) == 'team' && $this->uri->segment(2) == 'issuerequest' ? 'active' : '' ?>">
+                                    <a href="<?= base_url('team/issuerequest') ?>" class=""><i class="fa fa-tag"></i><span>Issue Request</span></a>
+                                </li>
+                                <li class="<?= $this->uri->segment(1) == 'team' && $this->uri->segment(2) == 'closedissue' ? 'active' : '' ?>">
+                                    <a href="<?= base_url('team/closedissue') ?>" class=""><i class="fa fa-tag"></i><span>Closed Request</span></a>
+                                </li>
+                            </ul>
+                        </li>
+                    <?php } ?>
                 </ul>
             </section>
         </aside>

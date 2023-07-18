@@ -13,7 +13,8 @@ class Pic extends CI_Controller
 
     public function index()
     {
-        $this->load->view('index');
+        // $this->load->view('index');
+        redirect(base_url('dashboard/profile'));
     }
 
     public function myissue()
@@ -221,8 +222,14 @@ class Pic extends CI_Controller
 
     public function loadProfile()
     {
+        $myissue = $this->pic_model->getMyIssue()->num_rows();
+        $issuerequest = $issueRequest = $this->pic_model->getIssueRequest($this->session->userdata('sd_user_id'))->num_rows();
+        $closedissue = $this->pic_model->getClosedIssue()->num_rows();
         $data = array(
-            'profile' => $this->pic_model->getUserDeptView()
+            'profile' => $this->pic_model->getUserDeptView(),
+            'myissue' => $myissue,
+            'issuerequest' => $issuerequest,
+            'closedissue' => $closedissue
         );
         $this->load->view('settings/profile/profile', $data);
     }
@@ -269,5 +276,45 @@ class Pic extends CI_Controller
             $response = array('success' => false);
         }
         echo json_encode($response);
+    }
+
+    public function loadIssueRequestOurTeam()
+    {
+        $issue = $this->pic_model->getIssueRequestOurTeam();
+        $data = array(
+            'issue' => $issue
+        );
+        $this->load->view('team/issuerequest/issuerequest', $data);
+    }
+
+    public function loadClosedIssueOurTeam()
+    {
+        $issue = $this->pic_model->getClosedIssueOurTeam();
+        $data = array(
+            'issue' => $issue
+        );
+        $this->load->view('team/closedissue/issuerequest', $data);
+    }
+
+    public function teamDetailIssueRequest()
+    {
+        $issue_id = $this->input->post('issue_id');
+        $data = array(
+            'detail' => $this->pic_model->teamDetailIssueRequest($issue_id)
+        );
+        $this->load->view('team/issuerequest/modalissuedetail', $data);
+    }
+
+    public function teamTrackingIssue()
+    {
+        $issue_id = $this->input->post('issue_id');
+        // $issue = $this->pic_model->getIssueView($issue_id);
+        $comment = $this->pic_model->getComment($issue_id);
+        $data = array(
+            'issue_id' => $issue_id,
+            // 'issue' => $issue,
+            'comment' => $comment
+        );
+        $this->load->view('team/issuerequest/modaltrackingissue', $data);
     }
 }

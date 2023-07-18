@@ -183,7 +183,7 @@
           <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-          <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+          <input type="password" id="password" name="password" onkeydown="handleKeyDown(event)" class="form-control" placeholder="Password" required>
           <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div class="row">
@@ -201,6 +201,13 @@
   </div>
   <script type="text/javascript" src="<?= base_url() ?>assets/js/sweetalert2.js"></script>
   <script>
+    function handleKeyDown(event) {
+      if (event.key === "Enter") {
+        // Event yang ingin Anda lakukan saat tombol Enter ditekan
+        prosesLogin()
+      }
+    }
+
     function prosesLogin() {
 
       let username = $('#username').val()

@@ -29,7 +29,7 @@ class Auth extends CI_Controller
                 'sd_image' => $login->row()->image,
                 'sd_role' => $this->auth_model->getRole($login->row()->role_id),
                 'sd_department' => $login->row()->department_id,
-                'sd_level' => $login->row()->level_id,
+                'sd_level' => $this->auth_model->getLevel($login->row()->level_id),
             );
             $this->session->set_userdata($session);
             $response = array(

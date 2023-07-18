@@ -2,8 +2,8 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            Issue Request
-            <small>Data issue request</small>
+            Closed Issue
+            <small>Data closed issue</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>

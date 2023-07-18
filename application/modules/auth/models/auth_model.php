@@ -19,4 +19,11 @@ class Auth_model extends CI_Model
         $query = $this->db->query($sql);
         return $query->row()->role_name;
     }
+
+    public function getLevel($level_id)
+    {
+        $sql = "SELECT level_name FROM master_level WHERE id = '$level_id'";
+        $query = $this->db->query($sql);
+        return $query->row()->level_name;
+    }
 }

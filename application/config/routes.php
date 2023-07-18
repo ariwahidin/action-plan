@@ -82,6 +82,13 @@ $route['issuerequest/createcommentimage'] = 'pic/createCommentImage';
 $route['issuerequest/closedissue'] = 'pic/loadCloseIssue';
 
 //Settings
+$route['dashboard/profile'] = 'pic/loadProfile';
 $route['settings/profile'] = 'pic/loadProfile';
 $route['settings/profile/gantifoto'] = 'pic/gantiFotoProfile';
 $route['settings/profile/gantipassword'] = 'pic/gantiPassword';
+
+//Team
+$route['team/issuerequest'] = 'pic/loadIssueRequestOurTeam';
+$route['team/issuerequest/detail'] = 'pic/teamDetailIssueRequest';
+$route['team/issuerequest/trackingissue'] = 'pic/teamTrackingIssue';
+$route['team/closedissue'] = 'pic/loadClosedIssueOurTeam';
