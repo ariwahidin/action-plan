@@ -317,4 +317,23 @@ class Pic extends CI_Controller
         );
         $this->load->view('team/issuerequest/modaltrackingissue', $data);
     }
+
+    public function loadTeamDashboard()
+    {
+        $team = $this->pic_model->getDashboardTeam();
+        $data = array(
+            'team' => $team
+        );
+        $this->load->view('team/dashboard', $data);
+    }
+
+    public function loadResponseIssue($issue_id)
+    {
+        // $issue_id = $this->input->post('issue_id');
+        // $update_issue_is_read = $this->pic_model->updateIssueIsRead($issue_id);
+        $data = array(
+            'detail' => $this->pic_model->getIssueRequestForMe($issue_id)
+        );
+        $this->load->view('issue/issuerequest/detailissuepage', $data);
+    }
 }

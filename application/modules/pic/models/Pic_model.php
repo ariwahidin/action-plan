@@ -195,4 +195,19 @@ class Pic_model extends CI_Model
         $query = $this->db->query($sql);
         return $query;
     }
+
+    public function getDashboardTeam()
+    {
+        $depart_id = $this->session->userdata('sd_department');
+        $sql = "select t1.id, t1.fullname, t1.username, t1.department_id, t1.department_name, t1.job_position,
+        (select count(id) from issueView where assign_to_pic = t1.id and status_name = 'open') as count_request_issue,
+        (select count(id) from issueView where assign_to_pic = t1.id and status_name = 'close') as count_closed_issue,
+        (select count(id) from issueView where created_by = t1.id and status_name = 'open') as count_users_open_issue,
+        t2.image as user_image
+        from userDeptView t1
+        left join master_users t2 on t1.id = t2.id
+        where t1.job_position is not null and t1.department_id = '$depart_id'";
+        $query = $this->db->query($sql);
+        return $query;
+    }
 }

@@ -62,6 +62,9 @@ $route['auth/success'] = 'auth/loginSuccess';
 
 //Admin
 $route['admin'] = 'admin/index';
+$route['admin/master/users'] = 'admin/master/User';
+$route['admin/master/modaledit'] = 'admin/master/showModalEdit';
+$route['admin/master/editaccessuser'] = 'admin/master/editAccessUser';
 
 //Issue
 $route['issue/myissue'] = 'pic/myissue';
@@ -80,6 +83,7 @@ $route['issuerequest/detailclosedissue'] = 'pic/detailCloseIssue';
 $route['issuerequest/loadmodalcommentimage'] = 'pic/loadModalCommentImage';
 $route['issuerequest/createcommentimage'] = 'pic/createCommentImage';
 $route['issuerequest/closedissue'] = 'pic/loadCloseIssue';
+$route['issuerequest/response/(:num)'] = 'pic/loadResponseIssue/$1';
 
 //Settings
 $route['dashboard/profile'] = 'pic/loadProfile';
@@ -92,3 +96,4 @@ $route['team/issuerequest'] = 'pic/loadIssueRequestOurTeam';
 $route['team/issuerequest/detail'] = 'pic/teamDetailIssueRequest';
 $route['team/issuerequest/trackingissue'] = 'pic/teamTrackingIssue';
 $route['team/closedissue'] = 'pic/loadClosedIssueOurTeam';
+$route['team/dashboard'] = 'pic/loadTeamDashboard';

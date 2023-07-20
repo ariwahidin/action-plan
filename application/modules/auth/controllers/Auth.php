@@ -22,22 +22,31 @@ class Auth extends CI_Controller
         $response = array();
         $login = $this->auth_model->getUser($post);
         if ($login->num_rows() > 0) {
-            $session = array(
-                'sd_user_id' => $login->row()->id,
-                'sd_fullname' => $login->row()->fullname,
-                'sd_username' => $login->row()->username,
-                'sd_image' => $login->row()->image,
-                'sd_role' => $this->auth_model->getRole($login->row()->role_id),
-                'sd_department' => $login->row()->department_id,
-                'sd_level' => $this->auth_model->getLevel($login->row()->level_id),
-            );
-            $this->session->set_userdata($session);
-            $response = array(
-                'success' => true
-            );
+            if (is_null($login->row()->role_id) || is_null($login->row()->level_id)) {
+                $response = array(
+                    'success' => false,
+                    'message' => "User belum terdaftar"
+                );
+            } else {
+                $session = array(
+                    'sd_user_id' => $login->row()->id,
+                    'sd_fullname' => $login->row()->fullname,
+                    'sd_username' => $login->row()->username,
+                    'sd_image' => $login->row()->image,
+                    'sd_role' => $this->auth_model->getRole($login->row()->role_id),
+                    'sd_department' => $login->row()->department_id,
+                    'sd_level' => $this->auth_model->getLevel($login->row()->level_id),
+                );
+                $this->session->set_userdata($session);
+                $response = array(
+                    'success' => true,
+                    'message' => "Login success"
+                );
+            }
         } else {
             $response = array(
-                'success' => false
+                'success' => false,
+                'message' => "Username/password salah"
             );
         }
         echo json_encode($response);

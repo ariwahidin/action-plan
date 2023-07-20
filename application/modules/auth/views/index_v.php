@@ -179,7 +179,7 @@
 
       <form action="<?= site_url('auth/process') ?>" method="post" id="formLogin">
         <div class="form-group has-feedback">
-          <input name="username" id="username" class="form-control" placeholder="Username">
+          <input name="username" id="username" onkeydown="onEnter(event)" class="form-control" placeholder="Username">
           <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
@@ -201,6 +201,12 @@
   </div>
   <script type="text/javascript" src="<?= base_url() ?>assets/js/sweetalert2.js"></script>
   <script>
+    function onEnter(event) {
+      if (event.target.value.trim() != "" && event.key == "Enter") {
+        $('#password').focus()
+      }
+    }
+
     function handleKeyDown(event) {
       if (event.key === "Enter") {
         // Event yang ingin Anda lakukan saat tombol Enter ditekan
@@ -238,7 +244,7 @@
               Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Login success',
+                title: response.message,
                 showConfirmButton: false,
                 timer: 1500
               }).then(function() {
@@ -249,7 +255,7 @@
               Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Username/password salah',
+                title: response.message,
                 showConfirmButton: false,
                 timer: 1500
               })

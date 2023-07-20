@@ -38,15 +38,26 @@
                                 foreach ($issuerequest->result() as $data) { ?>
                                     <tr>
                                         <td><?= $no++ ?></td>
-                                        <td><?= $data->code_issue ?></td>
+                                        <td>
+                                            <?= $data->code_issue ?>
+                                        </td>
                                         <td><?= $data->assign_to_depart_name ?></td>
                                         <td><?= ucwords(strtolower($data->assign_to_pic_name)) ?></td>
-                                        <td><?= $data->subject ?></td>
+                                        <td>
+                                            <?= $data->subject ?>
+                                            <span class="label label-warning">10</span>
+                                        </td>
                                         <td><?= $data->status_name ?></td>
                                         <td><?= date('d/m/Y H:i', strtotime($data->created_at)) ?></td>
                                         <td><?= $data->created_by_name ?></td>
                                         <td>
-                                            <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail</button>
+                                            <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail
+                                            </button>
+                                            <a href="<?= base_url('issuerequest/response/') . $data->id ?>" class="btn btn-info btn-xs">Response</a>
+                                            <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <i class="fa fa-envelope-o"></i>
+                                                <span class="label label-success">4</span>
+                                            </a> -->
                                         </td>
                                     </tr>
                                 <?php } ?>

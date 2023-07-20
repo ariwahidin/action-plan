@@ -42,6 +42,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Service Desk</title>
+    <link rel="icon" type="image/x-icon" href="<?= base_url() ?>assets/dist/img/pandurasa_kharisma_pt.png">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -103,7 +104,7 @@
                                 <li class="user-header">
                                     <img src="<?= base_url() ?>assets/dist/img/user123.png" class="img-circle" alt="User Image">
                                     <p>
-                                        <?= $this->session->userdata('sd_fullname')?>
+                                        <?= $this->session->userdata('sd_fullname') ?>
                                     </p>
                                 </li>
                                 <li class="user-footer">
@@ -122,7 +123,7 @@
             <section class="sidebar">
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">MAIN NAVIGATION</li>
-                    <li class="treeview <?= $this->uri->segment(2) == 'employee' ? 'active' : '' ?>">
+                    <li class="treeview <?= $this->uri->segment(2) == 'master' ? 'active' : '' ?>">
                         <a href="#">
                             <i class="fa fa-archive"></i>
                             <span>Data Master</span>
@@ -131,8 +132,8 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li <?= $this->uri->segment(2) == 'showGroup' ? 'class="active"' : '' ?>>
-                                <a href=""><i class="fa fa-tag"></i><span>Master A</span></a>
+                            <li <?= $this->uri->segment(2) == 'master' && $this->uri->segment(3) == 'users' ? 'class="active"' : '' ?>>
+                                <a href="<?= base_url('admin/master/users') ?>"><i class="fa fa-tag"></i><span>Master Users</span></a>
                             </li>
                         </ul>
                     </li>
