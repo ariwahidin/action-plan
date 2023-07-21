@@ -17,6 +17,9 @@
                 <?php $this->load->view('alert') ?>
                 <div class="box">
                     <div class="box-header">
+                        <button onclick="location.reload()" class="btn btn-warning btn-sm pull-right" style="margin-right: 5px;">
+                            Refresh
+                        </button>
                     </div>
                     <div class="box-body table-responsive">
                         <table class="table table-bordered table-striped" id="table1">
@@ -45,7 +48,6 @@
                                         <td><?= ucwords(strtolower($data->assign_to_pic_name)) ?></td>
                                         <td>
                                             <?= $data->subject ?>
-                                            <span class="label label-warning">10</span>
                                         </td>
                                         <td><?= $data->status_name ?></td>
                                         <td><?= date('d/m/Y H:i', strtotime($data->created_at)) ?></td>
@@ -53,11 +55,17 @@
                                         <td>
                                             <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail
                                             </button>
-                                            <a href="<?= base_url('issuerequest/response/') . $data->id ?>" class="btn btn-info btn-xs">Response</a>
-                                            <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-envelope-o"></i>
-                                                <span class="label label-success">4</span>
-                                            </a> -->
+                                            <!-- <a href="<?= base_url('issuerequest/response/') . $data->id ?>" class="btn btn-info btn-xs">Action</a> -->
+                                            <?php if ($data->new_action > 0) { ?>
+                                                <a href="<?= base_url('issuerequest/response/') . $data->id ?>" class="btn btn-success btn-xs">
+                                                    <?= $data->new_action . " " ?>
+                                                    New Action
+                                                </a>
+                                            <?php } else { ?>
+                                                <a href="<?= base_url('issuerequest/response/') . $data->id ?>" class="btn btn-info btn-xs">
+                                                    Action
+                                                </a>
+                                            <?php } ?>
                                         </td>
                                     </tr>
                                 <?php } ?>

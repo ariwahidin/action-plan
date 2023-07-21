@@ -104,7 +104,8 @@ class Pic extends CI_Controller
         $params = array(
             'issue_id' => $post['issue_id'],
             'desc' => $post['comment'],
-            'created_by' => $this->session->userdata('sd_user_id')
+            'created_by' => $this->session->userdata('sd_user_id'),
+            'is_read' => 'n'
         );
         $create = $this->pic_model->createComment($params);
         if ($this->db->affected_rows() > 0) {
@@ -151,7 +152,7 @@ class Pic extends CI_Controller
     public function detailIssueRequest()
     {
         $issue_id = $this->input->post('issue_id');
-        $update_issue_is_read = $this->pic_model->updateIssueIsRead($issue_id);
+        // $update_issue_is_read = $this->pic_model->updateIssueIsRead($issue_id);
         $data = array(
             'detail' => $this->pic_model->getIssueRequestForMe($issue_id)
         );
@@ -194,7 +195,8 @@ class Pic extends CI_Controller
             'issue_id' => $post['issue_id'],
             'desc' => $post['gambar_desc'],
             'image' => $fileName,
-            'created_by' => $this->session->userdata('sd_user_id')
+            'created_by' => $this->session->userdata('sd_user_id'),
+            'is_read' => 'n'
         );
 
         $create = $this->pic_model->createComment($params);
@@ -329,11 +331,44 @@ class Pic extends CI_Controller
 
     public function loadResponseIssue($issue_id)
     {
-        // $issue_id = $this->input->post('issue_id');
-        // $update_issue_is_read = $this->pic_model->updateIssueIsRead($issue_id);
         $data = array(
             'detail' => $this->pic_model->getIssueRequestForMe($issue_id)
         );
         $this->load->view('issue/issuerequest/detailissuepage', $data);
+    }
+
+    public function loadResponseMyIssue($issue_id)
+    {
+        $data = array(
+            'detail' => $this->pic_model->getMyIssue($issue_id)
+        );
+        $this->load->view('issue/issuerequest/detailissuepage', $data);
+    }
+
+    public function loadBoxComment($issue_id)
+    {
+        $comment = $this->pic_model->getComment($issue_id);
+        $data = array(
+            'comment' => $comment
+        );
+        $this->load->view('issue/issuerequest/comment/boxcomment', $data);
+    }
+
+    public function sendComment()
+    {
+        $post = $this->input->post();
+        var_dump($post);
+    }
+
+    public function updateIsReadComment()
+    {
+        $issue_id = $this->input->post('issue_id');
+        $this->pic_model->updateIsReadComment($issue_id);
+        if ($this->db->affected_rows() > 0) {
+            $response = array('success' => true);
+        } else {
+            $response = array('success' => false);
+        }
+        echo json_encode($response);
     }
 }

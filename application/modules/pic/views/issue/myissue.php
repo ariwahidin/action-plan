@@ -17,12 +17,17 @@
                 <?php $this->load->view('alert') ?>
                 <div class="box">
                     <div class="box-header">
+
                         <button onclick="showModalCreateIssue()" class="btn btn-primary btn-sm pull-right">
                             Create new issue
                         </button>
+                        <button onclick="location.reload()" class="btn btn-warning btn-sm pull-right" style="margin-right: 5px;">
+                            Refresh
+                        </button>
+
                     </div>
                     <div class="box-body table-responsive">
-                        <table class="table table-bordered table-striped" id="table1">
+                        <table style="font-size: 12px;" class="table table-bordered table-striped" id="table1">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -31,7 +36,7 @@
                                     <th>Assign to Pic</th>
                                     <th>Subject</th>
                                     <th>Status</th>
-                                    <th>Last Read</th>
+                                    <!-- <th>Last Read</th> -->
                                     <th>Request Date</th>
                                     <th>Request By</th>
                                     <th>Action</th>
@@ -47,13 +52,23 @@
                                         <td><?= ucwords(strtolower($data->assign_to_pic_name)) ?></td>
                                         <td><?= $data->subject ?></td>
                                         <td><?= $data->status_name ?></td>
-                                        <td><?php if (!is_null($data->last_read)) {
-                                                echo date('d/m/Y H:i', strtotime($data->last_read));
-                                            } ?></td>
+                                        <!-- <td><?php if (!is_null($data->last_read)) {
+                                                        echo date('d/m/Y H:i', strtotime($data->last_read));
+                                                    } ?></td> -->
                                         <td><?= date('d/m/Y', strtotime($data->created_at)) ?></td>
                                         <td><?= $data->created_by_name ?></td>
                                         <td>
                                             <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail</button>
+                                            <?php if ($data->new_action > 0) { ?>
+                                                <a href="<?= base_url('myissue/response/') . $data->id ?>" class="btn btn-success btn-xs">
+                                                    <?= $data->new_action . " " ?>
+                                                    New Action
+                                                </a>
+                                            <?php } else { ?>
+                                                <a href="<?= base_url('myissue/response/') . $data->id ?>" class="btn btn-info btn-xs">
+                                                    Action
+                                                </a>
+                                            <?php } ?>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -400,7 +415,7 @@
         $('#modal-close-issue').modal('show')
     }
 
-    function closeIssue(button){
+    function closeIssue(button) {
         let formCloseIssue = $('#formCloseIssue')
         formCloseIssue.submit()
     }

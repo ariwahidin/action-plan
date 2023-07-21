@@ -308,7 +308,7 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="<?= $this->uri->segment(2) == 'issuein' ? 'active' : '' ?>">
+                            <li class="<?= $this->uri->segment(2) == 'issuein' || $this->uri->segment(2) == 'response' ? 'active' : '' ?>">
                                 <a href="<?= base_url('issuerequest/issuein') ?>" class=""><i class="fa fa-tag"></i><span>Issue Request</span></a>
                             </li>
                             <li class="<?= $this->uri->segment(2) == 'closedissue' ? 'active' : '' ?>">
@@ -346,7 +346,7 @@
                                 <li class="<?= $this->uri->segment(1) == 'team' && $this->uri->segment(2) == 'dashboard' ? 'active' : '' ?>">
                                     <a href="<?= base_url('team/dashboard') ?>" class=""><i class="fa fa-dashboard"></i><span>Team Dashboard</span></a>
                                 </li>
-                                <li class="<?= $this->uri->segment(1) == 'team' && $this->uri->segment(2) == 'issuerequest' ? 'active' : '' ?>">
+                                <li class="<?= $this->uri->segment(1) == 'team' || $this->uri->segment(2) == 'issuerequest' ? 'active' : '' ?>">
                                     <a href="<?= base_url('team/issuerequest') ?>" class=""><i class="fa fa-tag"></i><span>Issue Request</span></a>
                                 </li>
                                 <li class="<?= $this->uri->segment(1) == 'team' && $this->uri->segment(2) == 'closedissue' ? 'active' : '' ?>">

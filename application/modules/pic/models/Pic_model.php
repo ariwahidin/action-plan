@@ -62,7 +62,7 @@ class Pic_model extends CI_Model
     public function getMyIssue($id = null)
     {
         $user_id = $this->session->userdata('sd_user_id');
-        $sql = "select * from issueView where created_by = '$user_id' and status_name != 'close'";
+        $sql = "select * from MyIssueView where created_by = '$user_id' and status_name != 'close'";
         if (!is_null($id)) {
             $sql .= " and id ='$id'";
         }
@@ -88,7 +88,11 @@ class Pic_model extends CI_Model
 
     public function getComment($issue_id)
     {
-        $sql = "select * from commentView where issue_id = '$issue_id' order by created_at desc";
+        $user_id = $this->session->userdata('sd_user_id');
+        $sql = "select t1.*,
+        (select count(id) from commentView where id = t1.id and is_read = 'n' and created_by != '$user_id' ) as new_action
+        from commentView t1 where
+        issue_id = '$issue_id' order by created_at desc";
         $query = $this->db->query($sql);
         return $query;
     }
@@ -209,5 +213,23 @@ class Pic_model extends CI_Model
         where t1.job_position is not null and t1.department_id = '$depart_id'";
         $query = $this->db->query($sql);
         return $query;
+    }
+
+    public function updateIsReadComment($issue_id)
+    {
+        $user_id = $this->session->userdata('sd_user_id');
+        $data = array(
+            'is_read' => 'y',
+            'read_at' => $this->getDate(),
+            'read_by' => $user_id
+        );
+
+        $where = array(
+            'issue_id' => $issue_id,
+            'is_read' => 'n',
+            'created_by !=' => $user_id
+        );
+        $this->db->where($where);
+        $this->db->update('sd_issue_tracking', $data);
     }
 }

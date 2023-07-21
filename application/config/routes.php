@@ -75,6 +75,8 @@ $route['issue/trackingissue'] = 'pic/trackingIssue';
 $route['issue/sendcomment'] = 'pic/createComment';
 $route['issue/loadcomment'] = 'pic/loadComment';
 $route['issue/closeissue'] = 'pic/closeIssue';
+$route['myissue/response/(:num)'] = 'pic/loadResponseMyIssue/$1';
+$route['issue/updateisread'] = 'pic/updateIsReadComment';
 
 //IssueRequest
 $route['issuerequest/issuein'] = 'pic/loadIssueRequest';
@@ -84,6 +86,8 @@ $route['issuerequest/loadmodalcommentimage'] = 'pic/loadModalCommentImage';
 $route['issuerequest/createcommentimage'] = 'pic/createCommentImage';
 $route['issuerequest/closedissue'] = 'pic/loadCloseIssue';
 $route['issuerequest/response/(:num)'] = 'pic/loadResponseIssue/$1';
+$route['issuerequest/loadboxcomment/(:num)'] = 'pic/loadBoxComment/$1';
+$route['issuerequest/sendcomment'] = 'pic/sendComment';
 
 //Settings
 $route['dashboard/profile'] = 'pic/loadProfile';
