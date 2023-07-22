@@ -38,7 +38,7 @@ class Pic_model extends CI_Model
     public function get_pic($post)
     {
         $depart_id = $post['depart_id'];
-        $sql = "SELECT * FROM userDeptView WHERE department_id = '$depart_id'";
+        $sql = "SELECT * FROM userDeptView WHERE division_name is not null and department_id = '$depart_id'";
         $query = $this->db->query($sql);
         return $query;
     }
@@ -92,7 +92,15 @@ class Pic_model extends CI_Model
         $sql = "select t1.*,
         (select count(id) from commentView where id = t1.id and is_read = 'n' and created_by != '$user_id' ) as new_action
         from commentView t1 where
-        issue_id = '$issue_id' order by created_at desc";
+        issue_id = '$issue_id' order by created_at asc";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function getCommentSendToMe($issue_id)
+    {
+        $user_id = $this->session->userdata('sd_user_id');
+        $sql = "select * from commentView where issue_id = '$issue_id' and is_read = 'n' and send_to = '$user_id'";
         $query = $this->db->query($sql);
         return $query;
     }

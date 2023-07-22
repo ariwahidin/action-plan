@@ -101,13 +101,28 @@ class Pic extends CI_Controller
     public function createComment()
     {
         $post = $this->input->post();
+        $issue_id = $post['issue_id'];
+        $user_id = $this->session->userdata('sd_user_id');
+        $send_to = $this->pic_model->getIssueView($issue_id)->row()->created_by;
+
+        if ($user_id == $send_to) {
+            //jika yang comment yang bikin issue, comment akan ditujukan kepada si pic nya
+            $send_to = $this->pic_model->getIssueView($issue_id)->row()->assign_to_pic;
+        } else {
+            //jika yang comment bukan yang bikin issue, comment akan ditujukan ke si pembuat issue
+            $send_to;
+        }
+
         $params = array(
-            'issue_id' => $post['issue_id'],
+            'issue_id' => $issue_id,
             'desc' => $post['comment'],
+            'send_to' => $send_to,
             'created_by' => $this->session->userdata('sd_user_id'),
             'is_read' => 'n'
         );
+
         $create = $this->pic_model->createComment($params);
+
         if ($this->db->affected_rows() > 0) {
             $response = array('success' => true);
         } else {
@@ -121,7 +136,7 @@ class Pic extends CI_Controller
         $issue_id = $this->input->post('issue_id');
         $comment = $this->pic_model->getComment($issue_id);
         $data = array(
-            'comment' => $comment
+            'comment' => $comment,
         );
         $this->load->view('issue/boxcomment', $data);
     }
@@ -191,11 +206,24 @@ class Pic extends CI_Controller
             file_put_contents($fileDestination, $decodedData);
         }
 
+        $issue_id = $post['issue_id'];
+        $user_id = $this->session->userdata('sd_user_id');
+        $send_to = $this->pic_model->getIssueView($issue_id)->row()->created_by;
+
+        if ($user_id == $send_to) {
+            //jika yang comment yang bikin issue, comment akan ditujukan kepada si pic nya
+            $send_to = $this->pic_model->getIssueView($issue_id)->row()->assign_to_pic;
+        } else {
+            //jika yang comment bukan yang bikin issue, comment akan ditujukan ke si pembuat issue
+            $send_to;
+        }
+
         $params = array(
             'issue_id' => $post['issue_id'],
             'desc' => $post['gambar_desc'],
             'image' => $fileName,
             'created_by' => $this->session->userdata('sd_user_id'),
+            'send_to' => $send_to,
             'is_read' => 'n'
         );
 
@@ -363,12 +391,19 @@ class Pic extends CI_Controller
     public function updateIsReadComment()
     {
         $issue_id = $this->input->post('issue_id');
-        $this->pic_model->updateIsReadComment($issue_id);
+        $user_id = $this->session->userdata('sd_user_id');
+        $send_to = $this->pic_model->getCommentSendToMe($issue_id)->row()->send_to;
+
+        if ($user_id == $send_to) {
+            $this->pic_model->updateIsReadComment($issue_id);
+        }
+
         if ($this->db->affected_rows() > 0) {
             $response = array('success' => true);
         } else {
             $response = array('success' => false);
         }
+
         echo json_encode($response);
     }
 }

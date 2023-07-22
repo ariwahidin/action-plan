@@ -2,8 +2,8 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            Closed Issue
-            <small>Data closed issue</small>
+            Issue Request
+            <small>Data issue request</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -27,8 +27,8 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Code Issue</th>
-                                    <th>Assign to Dept</th>
-                                    <th>Assign to Pic</th>
+                                    <!-- <th>Assign to Dept</th> -->
+                                    <th>Pic</th>
                                     <th>Subject</th>
                                     <th>Status</th>
                                     <th>Request Date</th>
@@ -44,7 +44,7 @@
                                         <td>
                                             <?= $data->code_issue ?>
                                         </td>
-                                        <td><?= $data->assign_to_depart_name ?></td>
+                                        <!-- <td><?= $data->assign_to_depart_name ?></td> -->
                                         <td><?= ucwords(strtolower($data->assign_to_pic_name)) ?></td>
                                         <td>
                                             <?= $data->subject ?>

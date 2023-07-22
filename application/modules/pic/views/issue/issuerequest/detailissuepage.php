@@ -109,8 +109,9 @@
                 <div class="box box-widget">
                     <div class="box-header">
                         <b>Action</b>
+                        <input type="hidden" id="total-comment" value="0">
                     </div>
-                    <div id="box-comment" style="max-height: 400px; overflow-y: auto;">
+                    <div id="box-comment" style="max-height: 300px; overflow-y: auto;">
                     </div>
                     <div class="box-footer">
                         <img class="img-responsive img-circle img-sm" src="<?= base_url() ?>upload/fotoprofil/<?= $_SESSION['sd_image'] == null ? "red-user.jpg" :  $_SESSION['sd_image'] ?>" alt="Alt Text">
@@ -190,12 +191,14 @@
 <script>
     $(document).ready(function() {
         loadComment()
-        setTimeout(updateIsRead, 5000);
-        setInterval(loadComment, 4000);
+        setTimeout(updateIsRead, 5000)
+        setInterval(loadComment, 4000)
     })
 
     function loadComment() {
-        $('#box-comment').load("<?= base_url('issuerequest/loadboxcomment/') . $this->uri->segment(3) ?>")
+        $('#box-comment').load("<?= base_url('issuerequest/loadboxcomment/') . $this->uri->segment(3) ?>", {}, function() {
+            // scrollToBottom()
+        })
         setTimeout(updateIsRead, 1500);
     }
 
@@ -208,7 +211,6 @@
             },
             dataType: "JSON",
             success: function(response) {
-
             }
         })
     }
@@ -227,12 +229,20 @@
                 dataType: "JSON",
                 success: function(response) {
                     if (response.success == true) {
-                        $('#box-comment').load("<?= base_url('issuerequest/loadboxcomment/') . $this->uri->segment(3) ?>")
+                        $('#box-comment').load("<?= base_url('issuerequest/loadboxcomment/') . $this->uri->segment(3) ?>", {}, function() {
+                            scrollToBottom()
+                        })
                         $('#comment').val("")
                     }
                 }
             })
         }
+    }
+
+    // Fungsi untuk mengatur posisi scroll ke paling bawah
+    function scrollToBottom() {
+        const scrollContainer = document.getElementById('box-comment');
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
 
     function getImage(button) {
