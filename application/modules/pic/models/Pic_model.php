@@ -62,7 +62,7 @@ class Pic_model extends CI_Model
     public function getMyIssue($id = null)
     {
         $user_id = $this->session->userdata('sd_user_id');
-        $sql = "select * from MyIssueView where created_by = '$user_id' and status_name != 'close'";
+        $sql = "select * from MyIssueView where created_by = '$user_id' and status_name not in ('close','cancel')";
         if (!is_null($id)) {
             $sql .= " and id ='$id'";
         }
@@ -77,6 +77,7 @@ class Pic_model extends CI_Model
         if (!is_null($id)) {
             $sql .= " and id ='$id'";
         }
+
         $query = $this->db->query($sql);
         return $query;
     }
@@ -90,9 +91,9 @@ class Pic_model extends CI_Model
     {
         $user_id = $this->session->userdata('sd_user_id');
         $sql = "select t1.*,
-        (select count(id) from commentView where id = t1.id and is_read = 'n' and created_by != '$user_id' ) as new_action
-        from commentView t1 where
-        issue_id = '$issue_id' order by created_at asc";
+            (select count(id) from commentView where id = t1.id and is_read = 'n' and created_by != '$user_id' ) as new_action
+            from commentView t1 where
+            issue_id = '$issue_id' order by created_at asc";
         $query = $this->db->query($sql);
         return $query;
     }
@@ -107,7 +108,7 @@ class Pic_model extends CI_Model
 
     public function getIssueRequest($user_id)
     {
-        $sql = "select * from issueView where assign_to_pic = '$user_id' and status_name != 'close'";
+        $sql = "select * from issueView where assign_to_pic = '$user_id' and status_name not in ('close', 'cancel')";
         $query = $this->db->query($sql);
         return $query;
     }
@@ -123,6 +124,7 @@ class Pic_model extends CI_Model
         $query = $this->db->query($sql);
         return $query;
     }
+
 
     public function updateIssueIsRead($issue_id)
     {
@@ -147,9 +149,12 @@ class Pic_model extends CI_Model
         $this->db->update('sd_issue', $data);
     }
 
-    public function getClosedIssue()
+    public function getClosedIssue($user_id = null)
     {
-        $user_id = $this->session->userdata('sd_user_id');
+        if (is_null($user_id)) {
+            $user_id = $this->session->userdata('sd_user_id');
+        }
+
         $sql = "select * from(
             select * from issueView where status_name = 'close'
             )ss
@@ -188,8 +193,9 @@ class Pic_model extends CI_Model
     public function getIssueRequestOurTeam()
     {
         $depart_id = $this->session->userdata('sd_department');
-        $sql = "select * from issueView where assign_to_depart_id = '$depart_id' and status_name != 'close'";
+        $sql = "select * from issueView where assign_to_depart_id = '$depart_id' and status_name not in ('close','cancel')";
         $query = $this->db->query($sql);
+        // var_dump($query->result());
         return $query;
     }
 
@@ -239,5 +245,40 @@ class Pic_model extends CI_Model
         );
         $this->db->where($where);
         $this->db->update('sd_issue_tracking', $data);
+    }
+
+    public function getIssueMyTeam($issue_id = null)
+    {
+        $sql = "select * from issueView";
+        if ($issue_id != null) {
+            $sql .= " where id = '$issue_id'";
+        }
+        $query = $this->db->query($sql);
+        return $query;
+    }
+    public function getIssueOpen($user_id = null)
+    {
+        $sql = "select * from issueView where status_name = 'open'";
+        if ($user_id != null) {
+            $sql .= " and assign_to_pic = '$user_id'";
+        }
+        $query = $this->db->query($sql);
+        // var_dump($this->db->last_query());
+        return $query;
+    }
+
+    public function cancelIssue($issue_id)
+    {
+        $data = array(
+            'status' => 4,
+            'cancel_at' => $this->getDate(),
+            'cancel_by' => $this->session->userdata('sd_user_id')
+        );
+        $where = array(
+            'id' => $issue_id
+        );
+
+        $this->db->where($where);
+        $this->db->update('sd_issue', $data);
     }
 }

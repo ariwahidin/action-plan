@@ -77,6 +77,7 @@ $route['issue/loadcomment'] = 'pic/loadComment';
 $route['issue/closeissue'] = 'pic/closeIssue';
 $route['myissue/response/(:num)'] = 'pic/loadResponseMyIssue/$1';
 $route['issue/updateisread'] = 'pic/updateIsReadComment';
+$route['myissue/cancel/(:num)'] = 'pic/cancelIssue/$1';
 
 //IssueRequest
 $route['issuerequest/issuein'] = 'pic/loadIssueRequest';
@@ -95,9 +96,13 @@ $route['settings/profile'] = 'pic/loadProfile';
 $route['settings/profile/gantifoto'] = 'pic/gantiFotoProfile';
 $route['settings/profile/gantipassword'] = 'pic/gantiPassword';
 
+
 //Team
 $route['team/issuerequest'] = 'pic/loadIssueRequestOurTeam';
 $route['team/issuerequest/detail'] = 'pic/teamDetailIssueRequest';
 $route['team/issuerequest/trackingissue'] = 'pic/teamTrackingIssue';
 $route['team/closedissue'] = 'pic/loadClosedIssueOurTeam';
 $route['team/dashboard'] = 'pic/loadTeamDashboard';
+$route['team/issueopen/pic/(:num)'] = 'pic/loadIssueOpen/$1';
+$route['team/issue/(:num)'] = 'pic/loadIssueForMyTeam/$1';
+$route['team/closedissue/pic/(:num)'] = 'pic/loadCloseIssue/$1';

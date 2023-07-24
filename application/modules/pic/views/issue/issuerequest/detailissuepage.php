@@ -2,13 +2,13 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            Detail Issue
-            <small>Data closed issue</small>
+            Action
+            <small>Data detail issue <?= $detail->row()->code_issue ?> </small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="">Issue</li>
-            <li class="active">Issue Request</li>
+            <li class="">Action</li>
         </ol>
     </section>
     <section class="content">
@@ -65,7 +65,7 @@
                         <div class="user-block">
                             <img class="img-circle" src="<?= base_url() ?>upload/fotoprofil/<?= $detail->row()->image_profile_created_by == null ? "red-user.jpg" :  $detail->row()->image_profile_created_by ?>" alt="User Image">
                             <span class="username"><?= ucfirst(strtolower($detail->row()->created_by_name)) ?></span>
-                            <span class="description"><?= date('d/m/Y', strtotime($detail->row()->created_at)) ?></span>
+                            <span class="description">Created <?= date('d/m/Y H:i', strtotime($detail->row()->created_at)) ?></span>
                         </div>
                         <!-- /.user-block -->
                         <div class="box-tools">
@@ -79,7 +79,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <img class="img-responsive pad" src="<?= base_url() ?>upload/img/<?= $detail->row()->image ?>" alt="Photo">
+                        <img class="img-responsive pad" src="<?= base_url() ?>upload/img/<?= $detail->row()->image ?>" alt="Photo" data-toggle="modal" data-target="#commentGambar">
                         <div class="form-group">
                             <label for="">Subject</label>
                             <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
@@ -98,7 +98,11 @@
 
                     <!-- /.box-footer -->
                     <div class="box-footer">
-
+                        <?php if ($this->session->userdata('sd_user_id') == $detail->row()->created_by) { ?>
+                            <?php if ($detail->row()->status_name != 'close') { ?>
+                                <button onclick="showModalCloseIssue(this)" data-issue-id="<?= $detail->row()->id ?>" type="button" class="btn btn-success btn-sm pull-right">Close Issue</button>
+                            <?php } ?>
+                        <?php } ?>
                     </div>
                     <!-- /.box-footer -->
                 </div>
@@ -176,6 +180,29 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-close-issue">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Close Issue</h4>
+            </div>
+            <div class="modal-body" style="max-height: 300px; overflow-y: auto;">
+                <form action="<?= base_url('issue/closeissue') ?>" method="POST" id="formCloseIssue">
+                    <div class="form-group">
+                        <label for="">Note</label>
+                        <textarea class="form-control" name="note" id="note" cols="20" rows="5"></textarea>
+                        <input type="hidden" name="issue_id" id="close-issue-id">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeIssue(this)" data-issue-id="" type="button" class="btn btn-success">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php $this->load->view('footer') ?>
 
 
@@ -210,8 +237,7 @@
                 issue_id: <?= $this->uri->segment(3) ?>
             },
             dataType: "JSON",
-            success: function(response) {
-            }
+            success: function(response) {}
         })
     }
 
@@ -332,5 +358,16 @@
             reader.readAsDataURL(file);
 
         }
+    }
+
+    function showModalCloseIssue(button) {
+        let issue_id = $(button).data('issue-id')
+        $('#close-issue-id').val(issue_id)
+        $('#modal-close-issue').modal('show')
+    }
+
+    function closeIssue(button) {
+        let formCloseIssue = $('#formCloseIssue')
+        formCloseIssue.submit()
     }
 </script>

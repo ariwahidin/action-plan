@@ -17,8 +17,8 @@
                 <?php $this->load->view('alert') ?>
                 <div class="box">
                     <div class="box-header">
-                        <button onclick="location.reload()" class="btn btn-warning btn-sm pull-right" style="margin-right: 5px;">
-                            Refresh
+                        <button onclick="location.reload()" class="btn btn-success btn-sm pull-right" style="margin-right: 5px;">
+                           <i class="fa fa-refresh"></i> Refresh
                         </button>
                     </div>
                     <div class="box-body table-responsive">

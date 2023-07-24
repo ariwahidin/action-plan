@@ -86,8 +86,8 @@
     $(document).ready(function() {
         let old_total_comment = $('#total-comment').val();
         let new_total_comment = "<?= $comment->num_rows() ?>";
-        console.log(old_total_comment)
-        console.log(new_total_comment)
+        // console.log(old_total_comment)
+        // console.log(new_total_comment)
         if (new_total_comment > old_total_comment) {
             scrollToBottom()
             $('#total-comment').val(new_total_comment)

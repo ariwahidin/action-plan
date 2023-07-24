@@ -17,9 +17,12 @@
                 <?php $this->load->view('alert') ?>
                 <div class="box">
                     <div class="box-header">
+                        <button onclick="location.reload()" class="btn btn-success btn-sm pull-right">
+                            <i class="fa fa-refresh"></i> Refresh
+                        </button>
                     </div>
                     <div class="box-body table-responsive">
-                        <table class="table table-bordered table-striped" id="table1">
+                        <table style="font-size: 12px;" class="table table-bordered table-striped" id="table1">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -46,7 +49,10 @@
                                         <td><?= date('d/m/Y H:i', strtotime($data->created_at)) ?></td>
                                         <td><?= ucwords(strtolower($data->created_by_name)) ?></td>
                                         <td>
-                                            <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail</button>
+                                            <!-- <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail</button> -->
+                                            <a href="<?= base_url('team/issue/' . $data->id) ?>" class="btn <?= $data->total_action > 0 ? 'btn-success' : 'btn-info' ?>  btn-xs">
+                                                <?= $data->total_action ?> &nbsp;Action
+                                            </a>
                                         </td>
                                     </tr>
                                 <?php } ?>

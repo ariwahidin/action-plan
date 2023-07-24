@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Tracking Issue</h4>
+                <h4 class="modal-title">Action</h4>
             </div>
             <div class="modal-body" style="max-height: 300px; overflow-y: auto;">
                 <div class="row">
@@ -48,19 +48,19 @@
 </div>
 
 <script>
-    var ajaxInterval
-    $('#modal-tracking-issue').on('shown.bs.modal', function() {
-        let issue_id = $('#comment_issue_id').val().trim()
-        ajaxInterval = setInterval(function() {
-            $('#box-comment').load("<?= base_url('issue/loadcomment') ?>", {
-                issue_id
-            })
-        }, 1000)
-    })
-    $('#modal-tracking-issue').on('hidden.bs.modal', function() {
-        // Hentikan interval pemanggilan AJAX
-        clearInterval(ajaxInterval);
-    });
+    // var ajaxInterval
+    // $('#modal-tracking-issue').on('shown.bs.modal', function() {
+    //     let issue_id = $('#comment_issue_id').val().trim()
+    //     ajaxInterval = setInterval(function() {
+    //         $('#box-comment').load("<?= base_url('issue/loadcomment') ?>", {
+    //             issue_id
+    //         })
+    //     }, 1000)
+    // })
+    // $('#modal-tracking-issue').on('hidden.bs.modal', function() {
+    //     // Hentikan interval pemanggilan AJAX
+    //     clearInterval(ajaxInterval);
+    // });
 </script>
 <script>
     function getImage(button) {

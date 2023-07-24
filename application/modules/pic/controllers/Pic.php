@@ -153,12 +153,18 @@ class Pic extends CI_Controller
         $this->load->view('issue/issuerequest/issuerequest', $data);
     }
 
-    public function loadCloseIssue()
+    public function loadCloseIssue($issue_id = null)
     {
         $department = $this->pic_model->getDepartment();
 
+        if (is_null($issue_id)) {
+            $issuerequest = $this->pic_model->getClosedIssue();
+        } else {
+            $issuerequest = $this->pic_model->getClosedIssue($issue_id);
+        }
+
         $data = array(
-            'issuerequest' => $this->pic_model->getClosedIssue(),
+            'issuerequest' => $issuerequest,
             'department' => $department
         );
         $this->load->view('issue/closedissue/issuerequest', $data);
@@ -365,6 +371,14 @@ class Pic extends CI_Controller
         $this->load->view('issue/issuerequest/detailissuepage', $data);
     }
 
+    public function loadIssueForMyTeam($issue_id)
+    {
+        $data = array(
+            'detail' => $this->pic_model->getIssueMyTeam($issue_id)
+        );
+        $this->load->view('issue/issuerequest/detailissuepage', $data);
+    }
+
     public function loadResponseMyIssue($issue_id)
     {
         $data = array(
@@ -405,5 +419,30 @@ class Pic extends CI_Controller
         }
 
         echo json_encode($response);
+    }
+
+    public function loadIssueOpen($issue_id)
+    {
+
+        $issue = $this->pic_model->getIssueOpen($issue_id);
+        // var_dump($issue->result());
+        // die;
+        $data = array(
+            'issue' => $issue
+        );
+        $this->load->view('team/issuerequest/issuerequest', $data);
+    }
+
+    public function cancelIssue($issue_id)
+    {
+        // var_dump($issue_id);
+        $this->pic_model->cancelIssue($issue_id);
+
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata('success', 'Issue berhasil dicancel');
+        } else {
+            $this->session->set_flashdata('error', 'Gagal cancel issue');
+        }
+        redirect(base_url('issue/myissue'));
     }
 }

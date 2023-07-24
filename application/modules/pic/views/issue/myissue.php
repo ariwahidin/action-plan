@@ -21,8 +21,8 @@
                         <button onclick="showModalCreateIssue()" class="btn btn-primary btn-sm pull-right">
                             Create new issue
                         </button>
-                        <button onclick="location.reload()" class="btn btn-warning btn-sm pull-right" style="margin-right: 5px;">
-                            Refresh
+                        <button onclick="location.reload()" class="btn btn-success btn-sm pull-right" style="margin-right: 5px;">
+                            <i class="fa fa-refresh"></i> Refresh
                         </button>
 
                     </div>
@@ -58,7 +58,7 @@
                                         <td><?= date('d/m/Y', strtotime($data->created_at)) ?></td>
                                         <td><?= $data->created_by_name ?></td>
                                         <td>
-                                            <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail</button>
+                                            <!-- <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail</button> -->
                                             <?php if ($data->new_action > 0) { ?>
                                                 <a href="<?= base_url('myissue/response/') . $data->id ?>" class="btn btn-success btn-xs">
                                                     <?= $data->new_action . " " ?>
@@ -68,6 +68,11 @@
                                                 <a href="<?= base_url('myissue/response/') . $data->id ?>" class="btn btn-info btn-xs">
                                                     Action
                                                 </a>
+                                                <button onclick="showModalCloseIssue(this)" data-issue-id="<?= $data->id ?>" type="button" class="btn btn-xs btn-success">Close</button>
+                                            <?php } ?>
+
+                                            <?php if ($data->total_action < 1) { ?>
+                                                <button onclick="cancelIssue(this)" data-issue-id="<?= $data->id ?>" class="btn btn-danger btn-xs"> Cancel</button>
                                             <?php } ?>
                                         </td>
                                     </tr>
@@ -102,7 +107,7 @@
                             <div class="form-group">
                                 <label for="">Assign to Dept</label>
                                 <div class="input-group input-group-sm">
-                                    <input type="text" id="input_depart_name" class="form-control">
+                                    <input type="text" id="input_depart_name" class="form-control" autocomplete="off" readonly>
                                     <input type="hidden" name="input_depart_id" id="input_depart_id">
                                     <span class="input-group-btn">
                                         <button onclick="pilihDept()" type="button" class="btn btn-info btn-flat">Pilih</button>
@@ -114,7 +119,7 @@
                             <div class="form-group">
                                 <label for="">Assign to Pic</label>
                                 <div class="input-group input-group-sm">
-                                    <input type="text" id="input-pic-name" class="form-control">
+                                    <input type="text" id="input-pic-name" class="form-control" autocomplete="off" readonly>
                                     <input type="hidden" name="input-pic-id" id="input-pic-id">
                                     <span class="input-group-btn">
                                         <button onclick="pilihPic()" type="button" class="btn btn-info btn-flat">Pilih</button>
@@ -409,6 +414,25 @@
     }
 </script>
 <script>
+    function cancelIssue(button) {
+        let issue_id = $(button).data('issue-id')
+        Swal.fire({
+            title: 'Yakin untuk cancel?',
+            showDenyButton: false,
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                window.location.href = "<?= base_url('myissue/cancel/') ?>" + issue_id
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    }
+
     function showModalCloseIssue(button) {
         let issue_id = $(button).data('issue-id')
         $('#close-issue-id').val(issue_id)

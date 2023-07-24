@@ -24,8 +24,8 @@
                         </div>
                         <div class="box-footer no-padding">
                             <ul class="nav nav-stacked">
-                                <li><a href="#">Open Issue <span class="pull-right badge bg-blue"><?= $data->count_request_issue ?></span></a></li>
-                                <li><a href="#">Closed Issue <span class="pull-right badge bg-aqua"><?= $data->count_closed_issue ?></span></a></li>
+                                <li><a href="<?= base_url('team/issueopen/pic/' . $data->id) ?>">Open Issue <span class="pull-right badge bg-blue"><?= $data->count_request_issue ?></span></a></li>
+                                <li><a href="<?= base_url('team/closedissue/pic/' . $data->id) ?>">Closed Issue <span class="pull-right badge bg-aqua"><?= $data->count_closed_issue ?></span></a></li>
                                 <li><a href="#">User's Issue<span class="pull-right badge bg-green"><?= $data->count_users_open_issue ?></span></a></li>
                             </ul>
                         </div>

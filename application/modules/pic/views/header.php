@@ -299,7 +299,7 @@
                             </li>
                         </ul>
                     </li> -->
-                    <li class="treeview <?= $this->uri->segment(1) == 'issuerequest' || $this->uri->segment(1) == 'issue' ? 'active' : '' ?>">
+                    <li class="treeview <?= $this->uri->segment(1) == 'issuerequest' || $this->uri->segment(1) == 'myissue' || $this->uri->segment(1) == 'issue' ? 'active' : '' ?>">
                         <a href="#">
                             <i class="fa fa-archive"></i>
                             <span>Issue</span>
