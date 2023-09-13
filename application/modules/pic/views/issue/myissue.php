@@ -39,6 +39,7 @@
                                     <!-- <th>Last Read</th> -->
                                     <th>Request Date</th>
                                     <th>Request By</th>
+                                    <th>Pic Response</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -57,6 +58,13 @@
                                                     } ?></td> -->
                                         <td><?= date('d/m/Y', strtotime($data->created_at)) ?></td>
                                         <td><?= $data->created_by_name ?></td>
+                                        <td>
+                                            <?php if ($data->jam_respon_baca > 24) { ?>
+                                                <span style="font-size: 12px !important;" class="label bg-red">slow respon</span>
+                                            <?php } else { ?>
+                                                <span style="font-size: 12px !important;" class="label bg-green">fast respon</span>
+                                            <?php } ?>
+                                        </td>
                                         <td>
                                             <!-- <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail</button> -->
                                             <?php if ($data->new_action > 0) { ?>
