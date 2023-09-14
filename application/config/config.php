@@ -23,7 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://192.168.60.14:1895/pk-action-plan/';
+
+$config['base_url'] = "https://test.test/tiket/";
+//$config['base_url'] = 'http://192.168.60.14:1895/pk-action-plan/';
 
 /*
 |--------------------------------------------------------------------------

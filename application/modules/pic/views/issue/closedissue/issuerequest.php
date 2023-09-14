@@ -1,4 +1,13 @@
 <?php $this->load->view('header') ?>
+<style>
+.bintang:before { 
+    margin: 5px 0;
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f005";
+    color: #FFD700;
+}
+</style>
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -28,6 +37,7 @@
                                     <th>Assign to Pic</th>
                                     <th>Subject</th>
                                     <th>Status</th>
+                                    <th>Rating</th>
                                     <th>Request Date</th>
                                     <th>Request By</th>
                                     <th>Action</th>
@@ -43,6 +53,7 @@
                                         <td><?= ucwords(strtolower($data->assign_to_pic_name)) ?></td>
                                         <td><?= $data->subject ?></td>
                                         <td><?= $data->status_name ?></td>
+                                        <td><i class="bintang"></i> <?= $data->bintang ?></td>
                                         <td><?= date('d/m/Y H:i', strtotime($data->created_at)) ?></td>
                                         <td><?= $data->created_by_name ?></td>
                                         <td>

@@ -1,4 +1,78 @@
 <?php $this->load->view('header') ?>
+<style>
+.rating { 
+    border: none;
+    float: unset;
+    width: 200px;
+}
+
+.rating > input { display: none; } 
+.rating > label:before { 
+  margin: 5px;
+  font-size: 30px;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating > .half:before { 
+  content: "\f089";
+  position: absolute;
+}
+
+.rating > label { 
+  color: #ddd; 
+ float: right; 
+}
+
+
+.rating > input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) > label:hover, /* hover current star */
+.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+.rating > input:checked + label:hover, /* hover current star when changing rating */
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating > input:checked ~ label:hover ~ label { color: #FFED85;  }
+
+input, label {
+  cursor: pointer;
+}
+
+input[type="submit"] {
+  margin-top: 5px;
+  background-color: #302d2b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 30px;
+}
+
+input[type="submit"]:focus {
+  outline: 0;
+}
+
+input[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+input[type="submit"]:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.fa-heart {
+  color: red;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.fa-heart:before {
+  content: "\f004";
+  font-family: FontAwesome;
+}
+</style>
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -189,9 +263,23 @@
                 <h4 class="modal-title">Close Issue</h4>
             </div>
             <div class="modal-body" style="max-height: 300px; overflow-y: auto;">
+                <label for="">Penilaian</label>               
+                <fieldset class="rating">
+                    <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="5 stars"></label>
+                    <input type="radio" id="star4half" name="rating" value="4.5" /><label class="half" for="star4half" title="4.5 stars"></label>
+                    <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="4 stars"></label>
+                    <input type="radio" id="star3half" name="rating" value="3.5" /><label class="half" for="star3half" title="3.5 stars"></label>
+                    <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="3 stars"></label>
+                    <input type="radio" id="star2half" name="rating" value="2.5" /><label class="half" for="star2half" title="2.5 stars"></label>
+                    <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="2 stars"></label>
+                    <input type="radio" id="star1half" name="rating" value="1.5" /><label class="half" for="star1half" title="1.5 stars"></label>
+                    <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="1 star"></label>
+                    <input type="radio" id="starhalf" name="rating" value="0.5" /><label class="half" for="starhalf" title="0.5 stars"></label>
+                </fieldset>
                 <form action="<?= base_url('issue/closeissue') ?>" method="POST" id="formCloseIssue">
                     <div class="form-group">
                         <label for="">Note</label>
+                        <input type="hidden" class="bintang" name="bintang" value="0"/>
                         <textarea class="form-control" name="note" id="note" cols="20" rows="5"></textarea>
                         <input type="hidden" name="issue_id" id="close-issue-id">
                     </div>
@@ -276,6 +364,17 @@
     }
 </script>
 <script>
+    let handleChange = ()=>{
+        const inputRatings = document.querySelectorAll('input[name="rating"]');
+        inputRatings.forEach(input => {
+            input.addEventListener('change', () => {
+            const valueStars = document.querySelector('input[name="rating"]:checked').value;
+            document.querySelector(".bintang").value = valueStars;
+            document.querySelector(".bintang").setAttribute("value",valueStars);
+            })
+        })
+    };
+
     function sendImage(button) {
         var issue_id = $(button).data('tracking-issue-id')
         let gambar_kompres = document.getElementById('comment_gambar_kompres').value
@@ -363,7 +462,9 @@
     function showModalCloseIssue(button) {
         let issue_id = $(button).data('issue-id')
         $('#close-issue-id').val(issue_id)
-        $('#modal-close-issue').modal('show')
+        $('#modal-close-issue').modal('show');
+        handleChange();
+
     }
 
     function closeIssue(button) {

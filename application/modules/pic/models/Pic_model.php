@@ -141,6 +141,7 @@ class Pic_model extends CI_Model
     {
         $data = array(
             'status' => 2,
+            'bintang' => $post['bintang'],
             'closed_note' => $post['note'],
             'closed_at' => $this->getDate(),
             'closed_by' => $this->session->userdata('sd_user_id')
