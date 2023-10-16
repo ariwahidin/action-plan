@@ -46,6 +46,7 @@ class Pic_model extends CI_Model
     public function createIssue($params)
     {
         $this->db->insert('sd_issue', $params);
+
     }
 
     public function getIssueView($issue_id = null)
@@ -63,9 +64,10 @@ class Pic_model extends CI_Model
     {
         $user_id = $this->session->userdata('sd_user_id');
         $sql = "select * from MyIssueView where created_by = '$user_id' and status_name not in ('close','cancel')";
-        if (!is_null($id)) {
+        if($id){
             $sql .= " and id ='$id'";
         }
+
         $sql .= " order by created_at desc";
         $query = $this->db->query($sql);
         return $query;
@@ -137,6 +139,12 @@ class Pic_model extends CI_Model
         $this->db->update('sd_issue', $data);
     }
 
+    public function cekissueid($id){
+        $sql = "select * from sd_issue where code_issue='".$id."'";
+        $query = $this->db->query($sql);
+        return ($query->row()->id);
+    }
+
     public function closeIssue($post)
     {
         $data = array(
@@ -170,6 +178,36 @@ class Pic_model extends CI_Model
         $this->db->where('id', $user_id);
         $this->db->update('master_users', $params);
     }
+
+    public function kewa($nomor){
+        $nomor = preg_replace('/[^0-9]/', '', $nomor);
+        if (substr($nomor, 0, 1) === '0') {
+            $nomor = '62' . substr($nomor, 1);
+        }
+        
+        return trim(ltrim(rtrim($nomor)));
+    }
+
+    public function cekprofile(){
+        $user_id = $this->session->userdata('sd_user_id');
+        $query = $this->db->get_where('master_users', array('id' => $user_id));
+        return ($query->row());
+    }
+
+    public function gantiwa($post)
+    {
+        $user_id = $this->session->userdata('sd_user_id');
+        $data = array(
+            'email' => $post['email'],
+            'whatsapp' => $this->kewa($post['wa']),
+            'updated_by' => $user_id,
+            'updated_at' => $this->getDate()
+        );
+        $this->db->where('id', $user_id);
+        $this->db->update('master_users', $data);
+    }
+
+    
 
     public function getUserDeptView()
     {
@@ -230,6 +268,12 @@ class Pic_model extends CI_Model
         return $query;
     }
 
+    public function userx($id){
+        $sql = "select t1.*, t2.Department from master_users t1 
+        left join master_department t2 on t2.id = t1.department_id where t1.id='$id'";
+        $query = $this->db->query($sql);
+        return $query->row();
+    }
     public function updateIsReadComment($issue_id)
     {
         $user_id = $this->session->userdata('sd_user_id');

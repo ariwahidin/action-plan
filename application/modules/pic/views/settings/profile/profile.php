@@ -15,18 +15,24 @@
             <div class="col-md-3">
                 <div class="box box-primary">
                     <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="<?= base_url() ?><?php if (!is_null($_SESSION['sd_image'])) {
-                                                                                                            echo "upload/fotoprofil/" . $_SESSION['sd_image'];
-                                                                                                        } else {
-                                                                                                            echo "assets/dist/img/red-user.png";
-                                                                                                        } ?>" alt="User profile picture">
+                        <img class="profile-user-img img-responsive img-circle" src="<?= base_url() ?><?php if (!is_null($_SESSION['sd_image'])) { echo "upload/fotoprofil/" . $_SESSION['sd_image']; } else { echo "assets/dist/img/red-user.png" ; } ?>" alt="User profile picture">
 
-                        <h3 class="profile-username text-center"><?= ucwords(strtolower($_SESSION['sd_fullname'])) ?></h3>
+                        <h3 class="profile-username text-center">
+                            <?= ucwords(strtolower($_SESSION['sd_fullname'])) ?>
+                        </h3>
 
-                        <p class="text-muted text-center">NIP : <?= $this->session->userdata('sd_username') ?></p>
-                        <p class="text-muted text-center"><?= ucwords($profile->row()->department_name) ?></p>
-                        <button onclick="loadModalGantiFoto(this)" class="btn btn-primary btn-block"><b>Ganti foto profile</b></button>
-                        <button onclick="loadModalGantiPassword(this)" class="btn btn-primary btn-block"><b>Ganti password</b></button>
+                        <p class="text-muted text-center">NIP :
+                            <?= $this->session->userdata('sd_username') ?>
+                        </p>
+                        <p class="text-muted text-center">
+                            <?= ucwords($profile->row()->department_name) ?>
+                        </p>
+                        <button onclick="loadModalGantiwa(this)" class="btn btn-primary btn-block"><b>Ganti Info
+                                Profile</b></button>
+                        <button onclick="loadModalGantiFoto(this)" class="btn btn-primary btn-block"><b>Ganti foto
+                                profile</b></button>
+                        <button onclick="loadModalGantiPassword(this)" class="btn btn-primary btn-block"><b>Ganti
+                                password</b></button>
                     </div>
                 </div>
 
@@ -37,14 +43,17 @@
                         <!-- small box -->
                         <div class="small-box bg-aqua">
                             <div class="inner">
-                                <h3><?= $issuerequest ?></h3>
+                                <h3>
+                                    <?= $issuerequest ?>
+                                </h3>
 
                                 <p>Issue Request</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-arrow-down-a"></i>
                             </div>
-                            <a href="<?= base_url('issuerequest/issuein') ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            <a href="<?= base_url('issuerequest/issuein') ?>" class="small-box-footer">More info <i
+                                    class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -52,14 +61,17 @@
                         <!-- small box -->
                         <div class="small-box bg-green">
                             <div class="inner">
-                                <h3><?= $closedissue ?></h3>
+                                <h3>
+                                    <?= $closedissue ?>
+                                </h3>
 
                                 <p>Closed Issue</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-checkmark-circled"></i>
                             </div>
-                            <a href="<?= base_url('issuerequest/closedissue') ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            <a href="<?= base_url('issuerequest/closedissue') ?>" class="small-box-footer">More info <i
+                                    class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -67,14 +79,17 @@
                         <!-- small box -->
                         <div class="small-box bg-yellow">
                             <div class="inner">
-                                <h3><?= $myissue ?></h3>
+                                <h3>
+                                    <?= $myissue ?>
+                                </h3>
 
                                 <p>My Issue</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-arrow-up-a"></i>
                             </div>
-                            <a href="<?= base_url('issue/myissue') ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                            <a href="<?= base_url('issue/myissue') ?>" class="small-box-footer">More info <i
+                                    class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -86,6 +101,8 @@
 
 <!-- Modal ganti foto profile -->
 <?php $this->view('settings/profile/modal-ganti-foto') ?>
+<!-- Modal ganti foto profile -->
+<?php $this->view('settings/profile/modal-ganti-wa') ?>
 <!-- Modal ganti password -->
 <?php $this->view('settings/profile/modal-ganti-password') ?>
 
@@ -93,6 +110,10 @@
 <script>
     function loadModalGantiFoto(button) {
         $('#modal-ganti-foto').modal('show')
+    }
+
+    function loadModalGantiwa(button) {
+        $('#modal-ganti-wa').modal('show')
     }
 
     function loadModalGantiPassword(button) {
@@ -107,11 +128,11 @@
             document.getElementById('gambar-kompres').value = ""
         } else {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 var img = new Image();
                 img.src = e.target.result;
 
-                img.onload = function() {
+                img.onload = function () {
                     var canvas = document.createElement('canvas');
                     var ctx = canvas.getContext('2d');
 
@@ -164,7 +185,7 @@
                     gambar_kompres: foto
                 },
                 dataType: "JSON",
-                success: function(response) {
+                success: function (response) {
                     if (response.success = true) {
                         Swal.fire({
                             position: 'center',
@@ -172,7 +193,7 @@
                             title: 'Foto profil berhasil diganti',
                             showConfirmButton: false,
                             timer: 1500
-                        }).then(function() {
+                        }).then(function () {
                             window.location.href = "<?= base_url('settings/profile') ?>"
                         })
                     } else {
@@ -189,6 +210,35 @@
         }
     }
 
+
+    function gantiwa() {
+        let wa = $('#in-wa').val()
+        let email = $('#in-email').val()
+        $.ajax({
+            url: "<?= base_url('settings/profile/gantiwa') ?>",
+            method: "POST",
+            data: {
+                wa: wa,
+                email: email
+            },
+            dataType: "JSON",
+            success: function (response) {
+                if (response.success == true) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: "Data berhasil diganti",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function () {
+                        window.location.href = "<?= base_url('settings/profile') ?>"
+                    })
+                }
+            }
+        });
+
+    }
+
     function gantiPassword() {
         let password = $('#password').val()
         let passwordConfirm = $('#password-confirm').val()
@@ -201,7 +251,7 @@
                         password
                     },
                     dataType: "JSON",
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success == true) {
                             Swal.fire({
                                 position: 'center',
@@ -209,7 +259,7 @@
                                 title: "Password berhasil diganti",
                                 showConfirmButton: false,
                                 timer: 1500
-                            }).then(function() {
+                            }).then(function () {
                                 window.location.href = "<?= base_url('settings/profile') ?>"
                             })
                         } else {

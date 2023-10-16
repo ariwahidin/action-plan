@@ -39,7 +39,7 @@
                                     <!-- <th>Last Read</th> -->
                                     <th>Request Date</th>
                                     <th>Request By</th>
-                                    <th>Pic Response</th>
+                                    <!--  <th>Pic Response</th> -->
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -58,6 +58,7 @@
                                                     } ?></td> -->
                                         <td><?= date('d/m/Y', strtotime($data->created_at)) ?></td>
                                         <td><?= $data->created_by_name ?></td>
+                                        <?php /*
                                         <td>
                                             <?php if ($data->jam_respon_baca > 24) { ?>
                                                 <span style="font-size: 12px !important;" class="label bg-red">slow respon</span>
@@ -65,6 +66,7 @@
                                                 <span style="font-size: 12px !important;" class="label bg-green">fast respon</span>
                                             <?php } ?>
                                         </td>
+                                        */ ?>
                                         <td>
                                             <!-- <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail</button> -->
                                             <?php if ($data->new_action > 0) { ?>
@@ -96,7 +98,7 @@
 <div class="modal fade" id="modal-create-issue">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="<?= base_url('issue/createissue') ?>" method="POST" enctype="multipart/form-data" id="formIssue">
+            <form type="POST" enctype="multipart/form-data" id="formIssue">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span></button>
@@ -157,7 +159,7 @@
                             <div class="form-group">
                                 <label for="">Image</label>
                                 <input id="gambar" type="file" accept="image/*">
-                                <input type="hidden" id="gambar_kompres" name="gambar_kompres" required>
+                                <input type="hidden" id="gambar_kompres"  name="gambar_kompres" required>
                             </div>
                         </div>
                     </div>
@@ -226,9 +228,6 @@
         $('#table1').DataTable()
     })
 
-    function showModalCreateIssue() {
-        $('#modal-create-issue').modal('show')
-    }
 
     function pilihDept() {
         $('#modal-pilih-dept').modal('show')
@@ -273,6 +272,47 @@
     }
 </script>
 <script>
+
+    
+    
+let kirimwa = (issue_id = null) => {
+        issue_id =  issue_id ?? "26";
+        $.ajax({ 
+            url: "<?= base_url('kirimissue/wa') ?>",
+            data: { id: issue_id},
+            method: "POST",
+            dataType: "JSON",
+            success: function(wam) {
+                //response.forEach((wam)=>{
+                    $.ajax({ 
+                        url: "<?= site_url('wa.php') ?>?p=kirimpesanwa",
+                        data: { no: wam.no, pesan:wam.pesan},
+                        method: "POST",
+                        dataType: "JSON",
+                        success: function(response) {
+                            console.log(response);
+                        }
+                    });
+                //});
+            }
+        })
+    };
+
+    let kirimemail = (issue_id = null) => {
+        issue_id = issue_id ?? "26";
+        $.ajax({ 
+            url: "<?= base_url('kirimissue/email') ?>",
+            data: { issue_id: issue_id},
+            method: "POST",
+            dataType: "JSON",
+            success: function(response) {
+                
+            }
+        });
+        kirimwa(issue_id);
+    };
+
+
     function send() {
 
         let picId = $('#input-pic-id').val().trim()
@@ -304,6 +344,8 @@
                 'warning'
             )
         } else {
+          
+
             Swal.fire({
                 icon: 'question',
                 title: 'Yakin untuk submit?',
@@ -312,17 +354,29 @@
                 confirmButtonText: 'Save',
                 denyButtonText: `Don't save`,
             }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    // Swal.fire('Saved!', '', 'success')
-                    loadingShow()
-                    compressAndSubmit()
+                    loadingShow();
+                    let formData = new FormData(document.getElementById('formIssue'));
+                    $.ajax({
+                        url: "<?= base_url('issue/createissue') ?>",
+                        data: formData,
+                        method: "POST",
+                        dataType: "JSON",
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            kirimemail(response.tiketid);
+                            loadingHide();
+                            $('#modal-create-issue').modal('hide');
+                        }
+                    });
                 } else if (result.isDenied) {
-                    Swal.fire('Changes are not saved', '', 'info')
+                    Swal.fire('Changes are not saved', '', 'info');
                 }
             })
         }
-
+        
+        // kirimemail();
     }
 
     function compressAndSubmit() {
@@ -330,14 +384,13 @@
         var file = fileInput.files[0];
 
         if (!file) {
-            document.getElementById('formIssue').submit();
+
         } else {
             var reader = new FileReader();
             reader.onload = function(e) {
                 var img = new Image();
                 img.src = e.target.result;
-
-                img.onload = function() {
+                img.onload = () => {
                     var canvas = document.createElement('canvas');
                     var ctx = canvas.getContext('2d');
 
@@ -370,13 +423,27 @@
 
                     // Menambahkan data gambar yang sudah dikompres ke input tersembunyi sebelum submit
                     document.getElementById('gambar_kompres').value = compressedDataUrl;
+                    document.getElementById('gambar_kompres').setAttribute("value",compressedDataUrl);
 
                     // Submit form
-                    document.getElementById('formIssue').submit();
-                }
+                    //document.getElementById('formIssue').submit();
+                
+                };
+
             }
+
+            
             reader.readAsDataURL(file);
+
         }
+    }
+
+    function showModalCreateIssue() {
+        $('#modal-create-issue').modal('show');
+        document.querySelector("#gambar").onchange = (gb) => {
+            compressAndSubmit();
+        };
+
     }
 
     function showIssueDetail(button) {
@@ -384,7 +451,7 @@
         $('#modalDetail').load("<?= base_url('issue/detailissue') ?>", {
             issue_id
         }, function() {
-            $('#modal-issue-detail').modal('show')
+            $('#modal-issue-detail').modal('show');
         })
     }
 
@@ -451,4 +518,5 @@
         let formCloseIssue = $('#formCloseIssue')
         formCloseIssue.submit()
     }
+
 </script>

@@ -73,11 +73,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
-$db['default'] = array(
-	'dsn'	=> '',
+/*
+	'username' => 'jauhari malik',
+	'password' => 'admin123',
+	'database' => 'SERVICE-DESK',
+
+
 	'hostname' => 'PK-QUERY',
 	'username' => 'sa',
 	'password' => 'n0v@0707#',
+	'database' => 'SERVICE-DESK',
+	'dbdriver' => 'sqlsrv',
+*/
+$db['default'] = array(
+	'dsn'	=> '',
+	'hostname' => 'localhost',
+	'username' => '',
+	'password' => '',
 	'database' => 'SERVICE-DESK',
 	'dbdriver' => 'sqlsrv',
 	'dbprefix' => '',

@@ -68,6 +68,9 @@ $route['admin/master/editaccessuser'] = 'admin/master/editAccessUser';
 
 //Issue
 $route['issue/myissue'] = 'pic/myissue';
+
+$route['kirimissue/email'] = 'pic/kirimissue';
+$route['kirimissue/wa'] = 'pic/kirimissuewa';
 $route['issue/pic/modalpic'] = 'pic/showModalPic';
 $route['issue/createissue'] = 'pic/createIssue';
 $route['issue/detailissue'] = 'pic/detailIssue';
@@ -95,6 +98,7 @@ $route['dashboard/profile'] = 'pic/loadProfile';
 $route['settings/profile'] = 'pic/loadProfile';
 $route['settings/profile/gantifoto'] = 'pic/gantiFotoProfile';
 $route['settings/profile/gantipassword'] = 'pic/gantiPassword';
+$route['settings/profile/gantiwa'] = 'pic/gantiwa';
 
 
 //Team

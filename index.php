@@ -36,6 +36,30 @@
  * @filesource
  */
 
+ /*
+$host = 'test.test'; // Ganti dengan host yang ingin Anda uji
+$port = 443; // Ganti dengan port yang sesuai dengan host Anda
+
+// Membuat socket
+$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+
+if ($socket === false) {
+    echo "Gagal membuat socket: " . socket_strerror(socket_last_error()) . "\n";
+} else {
+    echo "Socket berhasil dibuat.\n";
+}
+
+// Menyambungkan ke host
+if (socket_connect($socket, $host, $port) === false) {
+    echo "Gagal menyambung ke $host:$port: " . socket_strerror(socket_last_error()) . "\n";
+} else {
+    echo "Berhasil menyambung ke $host:$port.\n";
+}
+
+// Menutup socket
+socket_close($socket);
+exit;
+*/
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

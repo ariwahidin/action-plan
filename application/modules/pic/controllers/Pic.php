@@ -17,10 +17,73 @@ class Pic extends CI_Controller
         redirect(base_url('dashboard/profile'));
     }
 
+    public function kirimissuewa($id=null){
+        $id = ($id) ?? ($_POST['id'] ?? null);
+        $department = $this->pic_model->getDepartment();
+        $myissue = $this->pic_model->getMyIssue($id);
+        
+        foreach($myissue->result() as $pk => $pv){
+            $email = ($pv->email2);
+            $judul = $pv->created_by_name;
+            $from_name = $pv->created_by_name;
+            $from_jabatan = $pv->assign_by_depart_name;
+            $to_name = $pv->assign_to_pic_name;
+            $to_jabatan = $pv->assign_to_depart_name;
+            $tanggalx = $pv->created_at;
+            $subject = $pv->subject;
+            $detail_desc = $pv->desc;
+            $link_issue = site_url()."myissue/response/".$pv->id;
+                        
+            $tanggalx = $tanggalx ?? date("Y-m-d H:i:s");
+
+            // Konversi tanggal dan waktu ke dalam format yang diinginkan
+            $timestamp = strtotime($tanggalx);
+            $tanggal = date('j F Y H:i', $timestamp);
+
+            $pesan = "Notifikasi Penugasan Baru\n=============================\n\nDari : ".$from_name."\nBagian : ".$from_jabatan."\nTanggal : ".$tanggal."\n=============================\n\n\n\nKepada : ".$to_name."\nBagian : ".$to_jabatan."\n".$subject." - Status Open\n\nTentang :  ".$detail_desc."\n\n\nLink : ".$link_issue."\n";
+            $no = $pv->whatsapp2;
+            $response = [
+                'no' => $no,
+                'pesan' => $pesan,
+                'success' => true
+            ];
+        }
+
+        $externalUrl = '/wa.php?p=kirimpesan&no=' . $no . '&pesan=' . $pesan;
+        echo json_encode($response);
+        exit;
+    }
+    
+    public function kirimissue($id=null){
+
+        $mailerfile = FCPATH."mailer.php";
+        $submit = 1;
+        $id = ($id) ?? ($_POST['issue_id'] ?? null);
+        $department = $this->pic_model->getDepartment();
+        $myissue = $this->pic_model->getMyIssue($id);
+
+        foreach($myissue->result() as $pk => $pv){
+            $email = ($pv->email2);
+            $judul = $pv->created_by_name;
+            $from_name = $pv->created_by_name;
+            $from_jabatan = $pv->assign_by_depart_name;
+            $to_name = $pv->assign_to_pic_name;
+            $to_jabatan = $pv->assign_to_depart_name;
+            $tanggalx = $pv->created_at;
+            $subject = $pv->subject;
+            $detail_desc = $pv->desc;
+            $link_issue = site_url()."myissue/response/".$pv->id;
+            require_once($mailerfile);
+        }
+
+        echo json_encode(array("success"=>true));
+    }
+
     public function myissue()
     {
         $department = $this->pic_model->getDepartment();
         $myissue = $this->pic_model->getMyIssue();
+
         $data = array(
             'department' => $department,
             'myissue' => $myissue
@@ -55,9 +118,9 @@ class Pic extends CI_Controller
             $fileName = "noimage.jpg";
         }
 
-
+        $tiketid =$this->pic_model->generateCodeIssue();
         $params = array(
-            'code_issue' => $this->pic_model->generateCodeIssue(),
+            'code_issue' => $tiketid,
             'subject' => $post['subject'],
             'desc' => $post['desc'],
             'image' => $fileName,
@@ -65,14 +128,26 @@ class Pic extends CI_Controller
             'assign_to_pic' => $post['input-pic-id'],
             'created_by' => $this->session->userdata('sd_user_id')
         );
-        $createIssue = $this->pic_model->createIssue($params);
 
-        if ($this->db->affected_rows() > 0) {
-            $this->session->set_flashdata('success', 'Data berhasil disimpan');
-        } else {
-            $this->session->set_flashdata('error', 'Gagal simpan data');
-        }
-        redirect(base_url('issue/myissue'));
+        
+        $createIssue = $this->pic_model->createIssue($params);
+        $cid = $this->pic_model->cekissueid($tiketid);
+        $response = array('success' => true,'tiketid'=>$cid,'params'=>$params);
+
+        // if ($this->db->affected_rows() > 0) {
+            
+        //     $response = array('success' => true,'tiketid'=>$cid,'params'=>$params);
+        //     //$this->session->set_flashdata('success', 'Data berhasil disimpan');
+        // } else {
+            
+        //     $response = array('error' => true);
+        //     //$this->session->set_flashdata('error', 'Gagal simpan data');
+        // }
+
+        
+        echo json_encode($response);
+        
+        //redirect(base_url('issue/myissue'));
     }
 
     public function detailIssue()
@@ -261,8 +336,10 @@ class Pic extends CI_Controller
         $myissue = $this->pic_model->getMyIssue()->num_rows();
         $issuerequest = $issueRequest = $this->pic_model->getIssueRequest($this->session->userdata('sd_user_id'))->num_rows();
         $closedissue = $this->pic_model->getClosedIssue()->num_rows();
+        $cekprofile = $this->pic_model->cekprofile();
         $data = array(
             'profile' => $this->pic_model->getUserDeptView(),
+            'cekprofile' => $cekprofile,
             'myissue' => $myissue,
             'issuerequest' => $issuerequest,
             'closedissue' => $closedissue
@@ -302,6 +379,7 @@ class Pic extends CI_Controller
         echo json_encode($response);
     }
 
+
     public function gantiPassword()
     {
         $post = $this->input->post();
@@ -313,6 +391,20 @@ class Pic extends CI_Controller
         }
         echo json_encode($response);
     }
+
+    
+    public function gantiwa()
+    {
+        $post = $this->input->post();
+        $this->pic_model->gantiwa($post);
+        if ($this->db->affected_rows() > 0) {
+            $response = array('success' => true);
+        } else {
+            $response = array('success' => false);
+        }
+        echo json_encode($response);
+    }
+
 
     public function loadIssueRequestOurTeam()
     {

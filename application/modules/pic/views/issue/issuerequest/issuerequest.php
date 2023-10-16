@@ -33,7 +33,7 @@
                                     <th>Status</th>
                                     <th>Request Date</th>
                                     <th>Request By</th>
-                                    <th>Your Response</th>
+                                    <!--  <th>Your Response</th> -->
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -53,6 +53,7 @@
                                         <td><?= $data->status_name ?></td>
                                         <td><?= date('d/m/Y H:i', strtotime($data->created_at)) ?></td>
                                         <td><?= $data->created_by_name ?></td>
+                                        <?php /*
                                         <td>
                                             <?php if ($data->jam_respon_baca > 24) { ?>
                                                 <span style="font-size: 12px !important;" class="label bg-red">slow respon</span>
@@ -60,6 +61,7 @@
                                                 <span style="font-size: 12px !important;" class="label bg-green">fast respon</span>
                                             <?php } ?>
                                         </td>
+                                        */ ?>
                                         <td>
                                             <button onclick="showIssueDetail(this)" data-issue-id="<?= $data->id ?>" class="btn btn-primary btn-xs">Detail
                                             </button>

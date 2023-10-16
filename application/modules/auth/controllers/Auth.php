@@ -30,6 +30,8 @@ class Auth extends CI_Controller
             } else {
                 $session = array(
                     'sd_user_id' => $login->row()->id,
+                    'sd_wa' => $login->row()->whatsapp,
+                    'sd_email' => $login->row()->email,
                     'sd_fullname' => $login->row()->fullname,
                     'sd_username' => $login->row()->username,
                     'sd_image' => $login->row()->image,
